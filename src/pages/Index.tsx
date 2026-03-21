@@ -7,17 +7,25 @@ import { VehicleTracker } from '@/components/dashboard/VehicleTracker';
 import { NotificationCenter } from '@/components/dashboard/NotificationCenter';
 import { EmergencyChat } from '@/components/dashboard/EmergencyChat';
 import { SafetyGuide } from '@/components/dashboard/SafetyGuide';
+import { FireDetectionPanel } from '@/components/dashboard/FireDetectionPanel';
+import { NearestStationsPanel } from '@/components/dashboard/NearestStationsPanel';
+import { IncidentHistoryPanel } from '@/components/dashboard/IncidentHistoryPanel';
+import { LocationPanel } from '@/components/dashboard/LocationPanel';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState('overview');
-  const [selectedIncident, setSelectedIncident] = useState<string>('');
+  const [selectedIncident, setSelectedIncident] = useState<string>('INC-001');
 
   const renderContent = () => {
     switch (activeTab) {
       case 'overview':
         return <CommandOverview onSelectIncident={setSelectedIncident} onNavigate={setActiveTab} />;
+      case 'detection':
+        return <FireDetectionPanel demoMode />;
       case 'incidents':
         return <IncidentPanel selectedId={selectedIncident} onSelect={setSelectedIncident} />;
+      case 'location':
+        return <LocationPanel incidentId={selectedIncident} />;
       case 'map':
         return (
           <div className="flex flex-col h-full">
@@ -30,8 +38,12 @@ const Index = () => {
             </div>
           </div>
         );
+      case 'stations':
+        return <NearestStationsPanel incidentId={selectedIncident} />;
       case 'vehicles':
         return <VehicleTracker />;
+      case 'history':
+        return <IncidentHistoryPanel />;
       case 'notifications':
         return <NotificationCenter />;
       case 'chat':

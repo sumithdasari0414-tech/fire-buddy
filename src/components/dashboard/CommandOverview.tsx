@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { mockIncidents, mockVehicles, mockNotifications } from '@/data/mockData';
 import { StatusBadge } from './StatusBadge';
 import { IncidentMap } from './IncidentMap';
-import { Flame, Truck, Bell, Shield, Phone, MapPin, Activity, Zap } from 'lucide-react';
+import { Flame, Truck, Bell, Shield, Phone, MapPin, Activity, Zap, Camera, Building, FileText, Navigation } from 'lucide-react';
 
 function StatCard({ icon: Icon, label, value, sub, variant }: {
   icon: React.ElementType; label: string; value: string | number; sub: string;
@@ -17,11 +17,7 @@ function StatCard({ icon: Icon, label, value, sub, variant }: {
   const iconColors = { critical: 'text-critical', warning: 'text-warning', success: 'text-success', info: 'text-info' };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className={`rounded-lg border p-4 ${colors[variant]}`}
-    >
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className={`rounded-lg border p-4 ${colors[variant]}`}>
       <div className="flex items-center justify-between mb-2">
         <Icon className={`w-5 h-5 ${iconColors[variant]}`} />
         <span className="text-[10px] font-mono text-muted-foreground uppercase">{label}</span>
@@ -46,7 +42,7 @@ export function CommandOverview({ onSelectIncident, onNavigate }: {
         <div>
           <h1 className="text-lg font-bold tracking-tight flex items-center gap-2">
             <Flame className="w-5 h-5 text-primary" />
-            COMMAND CENTER
+            FIREWATCH — HASSANTUK COMMAND CENTER
           </h1>
           <p className="text-xs text-muted-foreground font-mono mt-0.5">
             {new Date().toLocaleString()} — ALL SYSTEMS OPERATIONAL
@@ -55,7 +51,7 @@ export function CommandOverview({ onSelectIncident, onNavigate }: {
         <div className="flex items-center gap-2">
           <StatusBadge variant="critical" pulse>LIVE</StatusBadge>
           <div className="flex items-center gap-1 px-2 py-1 bg-success/10 rounded text-[10px] font-mono text-success">
-            <Zap className="w-3 h-3" /> OFFLINE READY
+            <Zap className="w-3 h-3" /> 24/7 MONITORING
           </div>
         </div>
       </div>
@@ -70,15 +66,19 @@ export function CommandOverview({ onSelectIncident, onNavigate }: {
         </div>
 
         {/* Map */}
-        <div className="rounded-lg border border-border overflow-hidden" style={{ height: '380px' }}>
+        <div className="rounded-lg border border-border overflow-hidden" style={{ height: '340px' }}>
           <IncidentMap onSelectIncident={(id) => { onSelectIncident(id); onNavigate('incidents'); }} />
         </div>
 
         {/* Quick actions */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
-            { icon: MapPin, label: 'View Map', tab: 'map' },
+            { icon: Camera, label: 'Fire Detection', tab: 'detection' },
+            { icon: MapPin, label: 'Live Map', tab: 'map' },
+            { icon: Navigation, label: 'Location Intel', tab: 'location' },
+            { icon: Building, label: 'Fire Stations', tab: 'stations' },
             { icon: Truck, label: 'Fleet Status', tab: 'vehicles' },
+            { icon: FileText, label: 'Incident Logs', tab: 'history' },
             { icon: Phone, label: 'AI Assistant', tab: 'chat' },
             { icon: Activity, label: 'Safety Guide', tab: 'safety' },
           ].map(action => (
@@ -109,7 +109,7 @@ export function CommandOverview({ onSelectIncident, onNavigate }: {
                   </StatusBadge>
                   <div>
                     <p className="text-sm font-medium">{inc.id} — {inc.location.street}</p>
-                    <p className="text-[11px] text-muted-foreground">{inc.reportedAt} · Spread: {inc.spreadPrediction}</p>
+                    <p className="text-[11px] text-muted-foreground">{inc.reportedAt} · Spread: {inc.spreadPrediction} · Humans: {inc.humansDetected}</p>
                   </div>
                 </div>
               </button>
