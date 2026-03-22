@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { mockIncidents, mockVehicles, mockNotifications } from '@/data/mockData';
+import { getIncidents, getVehicles, getNotifications, getCityConfig } from '@/data/mockData';
 import { StatusBadge } from './StatusBadge';
 import { IncidentMap } from './IncidentMap';
 import { Flame, Truck, Bell, Shield, Phone, MapPin, Activity, Zap, Camera, Building, FileText, Navigation } from 'lucide-react';
@@ -32,9 +32,14 @@ export function CommandOverview({ onSelectIncident, onNavigate }: {
   onSelectIncident: (id: string) => void;
   onNavigate: (tab: string) => void;
 }) {
-  const activeIncidents = mockIncidents.filter(i => i.status === 'active').length;
-  const deployedVehicles = mockVehicles.filter(v => v.status !== 'available').length;
-  const unreadAlerts = mockNotifications.filter(n => !n.read).length;
+  const incidents = getIncidents();
+  const vehicles = getVehicles();
+  const notifications = getNotifications();
+  const cityConfig = getCityConfig();
+
+  const activeIncidents = incidents.filter(i => i.status === 'active').length;
+  const deployedVehicles = vehicles.filter(v => v.status !== 'available').length;
+  const unreadAlerts = notifications.filter(n => !n.read).length;
 
   return (
     <div className="flex flex-col h-full overflow-y-auto">
@@ -42,10 +47,10 @@ export function CommandOverview({ onSelectIncident, onNavigate }: {
         <div>
           <h1 className="text-lg font-bold tracking-tight flex items-center gap-2">
             <Flame className="w-5 h-5 text-primary" />
-            FIREWATCH — HASSANTUK COMMAND CENTER
+            FIREWATCH — {cityConfig.name.toUpperCase()} COMMAND
           </h1>
           <p className="text-xs text-muted-foreground font-mono mt-0.5">
-            {new Date().toLocaleString()} — ALL SYSTEMS OPERATIONAL
+            {new Date().toLocaleString()} — {cityConfig.state.toUpperCase()} · ALL SYSTEMS OPERATIONAL
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -57,20 +62,17 @@ export function CommandOverview({ onSelectIncident, onNavigate }: {
       </div>
 
       <div className="p-4 space-y-4">
-        {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <StatCard icon={Flame} label="Active Incidents" value={activeIncidents} sub={`${mockIncidents.length} total today`} variant="critical" />
-          <StatCard icon={Truck} label="Deployed Units" value={deployedVehicles} sub={`${mockVehicles.length} total fleet`} variant="warning" />
-          <StatCard icon={Bell} label="Unread Alerts" value={unreadAlerts} sub={`${mockNotifications.length} total`} variant="info" />
+          <StatCard icon={Flame} label="Active Incidents" value={activeIncidents} sub={`${incidents.length} total today`} variant="critical" />
+          <StatCard icon={Truck} label="Deployed Units" value={deployedVehicles} sub={`${vehicles.length} total fleet`} variant="warning" />
+          <StatCard icon={Bell} label="Unread Alerts" value={unreadAlerts} sub={`${notifications.length} total`} variant="info" />
           <StatCard icon={Shield} label="Response Time" value="4.2m" sub="Avg today" variant="success" />
         </div>
 
-        {/* Map */}
         <div className="rounded-lg border border-border overflow-hidden" style={{ height: '340px' }}>
           <IncidentMap onSelectIncident={(id) => { onSelectIncident(id); onNavigate('incidents'); }} />
         </div>
 
-        {/* Quick actions */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
             { icon: Camera, label: 'Fire Detection', tab: 'detection' },
@@ -78,8 +80,8 @@ export function CommandOverview({ onSelectIncident, onNavigate }: {
             { icon: Navigation, label: 'Location Intel', tab: 'location' },
             { icon: Building, label: 'Fire Stations', tab: 'stations' },
             { icon: Truck, label: 'Fleet Status', tab: 'vehicles' },
+            { icon: Phone, label: 'Caller Tracking', tab: 'callers' },
             { icon: FileText, label: 'Incident Logs', tab: 'history' },
-            { icon: Phone, label: 'AI Assistant', tab: 'chat' },
             { icon: Activity, label: 'Safety Guide', tab: 'safety' },
           ].map(action => (
             <button
@@ -93,11 +95,10 @@ export function CommandOverview({ onSelectIncident, onNavigate }: {
           ))}
         </div>
 
-        {/* Critical incidents */}
         <div>
           <h3 className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-wider mb-2">Priority Incidents</h3>
           <div className="space-y-2">
-            {mockIncidents.filter(i => i.severity === 'critical' || i.severity === 'high').map(inc => (
+            {incidents.filter(i => i.severity === 'critical' || i.severity === 'high').map(inc => (
               <button
                 key={inc.id}
                 onClick={() => { onSelectIncident(inc.id); onNavigate('incidents'); }}

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { incidentLogs } from '@/data/mockData';
+import { getLogs } from '@/data/mockData';
 import { StatusBadge } from './StatusBadge';
 import { FileText, Download, Clock, MapPin } from 'lucide-react';
 
@@ -13,6 +13,7 @@ const statusVariant = {
 } as const;
 
 export function IncidentHistoryPanel() {
+  const incidentLogs = getLogs();
   const generateReport = () => {
     const report = incidentLogs.map(log =>
       `[${log.timestamp}] ${log.incidentId} | ${log.severity.toUpperCase()} | ${log.status} | ${log.location}\n  ${log.event}\n  ${log.details}${log.responseTime ? `\n  Response time: ${log.responseTime}` : ''}`

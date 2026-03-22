@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { mockIncidents } from '@/data/mockData';
+import { getIncidents } from '@/data/mockData';
 import type { Incident } from '@/data/mockData';
 import { StatusBadge } from './StatusBadge';
 import { MapPin, Clock, Building, Maximize2, AlertTriangle } from 'lucide-react';
@@ -8,6 +8,7 @@ export function IncidentPanel({ selectedId, onSelect }: {
   selectedId?: string;
   onSelect: (id: string) => void;
 }) {
+  const mockIncidents = getIncidents();
   const selected = mockIncidents.find(i => i.id === selectedId);
 
   return (

@@ -1,21 +1,23 @@
 import { useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { fireStations, mockIncidents, calculateDistance, getEstimatedResponseTime } from '@/data/mockData';
+import { getStations, getIncidents, calculateDistance, getEstimatedResponseTime } from '@/data/mockData';
 import { StatusBadge } from './StatusBadge';
 import { Building, Phone, Truck, Clock, MapPin, ExternalLink } from 'lucide-react';
 
 export function NearestStationsPanel({ incidentId }: { incidentId?: string }) {
-  const incident = mockIncidents.find(i => i.id === incidentId) || mockIncidents[0];
+  const incidents = getIncidents();
+  const stations = getStations();
+  const incident = incidents.find(i => i.id === incidentId) || incidents[0];
 
   const sortedStations = useMemo(() => {
-    return fireStations.map(station => {
+    return stations.map(station => {
       const dist = calculateDistance(
         incident.location.lat, incident.location.lng,
         station.location.lat, station.location.lng
       );
       return { ...station, distance: dist, responseTime: getEstimatedResponseTime(dist) };
     }).sort((a, b) => a.distance - b.distance);
-  }, [incident]);
+  }, [incident, stations]);
 
   return (
     <div className="flex flex-col h-full">
@@ -26,7 +28,7 @@ export function NearestStationsPanel({ incidentId }: { incidentId?: string }) {
             Relative to: {incident.location.street}
           </p>
         </div>
-        <StatusBadge variant="info">{fireStations.length} STATIONS</StatusBadge>
+        <StatusBadge variant="info">{stations.length} STATIONS</StatusBadge>
       </div>
 
       <div className="flex-1 overflow-y-auto divide-y divide-border">

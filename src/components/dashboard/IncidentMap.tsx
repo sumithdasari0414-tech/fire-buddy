@@ -1,14 +1,20 @@
+import { useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { mockIncidents, mockVehicles } from '@/data/mockData';
+import { getIncidents, getVehicles, getCityConfig } from '@/data/mockData';
 import type { Incident, Vehicle } from '@/data/mockData';
 import { StatusBadge } from './StatusBadge';
 
-const MAP_BOUNDS = { minLat: 28.55, maxLat: 28.66, minLng: 77.15, maxLng: 77.25 };
-
-function toPercent(lat: number, lng: number) {
-  const x = ((lng - MAP_BOUNDS.minLng) / (MAP_BOUNDS.maxLng - MAP_BOUNDS.minLng)) * 100;
-  const y = ((MAP_BOUNDS.maxLat - lat) / (MAP_BOUNDS.maxLat - MAP_BOUNDS.minLat)) * 100;
-  return { x: Math.max(5, Math.min(95, x)), y: Math.max(5, Math.min(95, y)) };
+function getMapBounds(incidents: Incident[], vehicles: Vehicle[]) {
+  const allLats = [...incidents.map(i => i.location.lat), ...vehicles.map(v => v.location.lat)];
+  const allLngs = [...incidents.map(i => i.location.lng), ...vehicles.map(v => v.location.lng)];
+  if (allLats.length === 0) return { minLat: 0, maxLat: 1, minLng: 0, maxLng: 1 };
+  const pad = 0.02;
+  return {
+    minLat: Math.min(...allLats) - pad,
+    maxLat: Math.max(...allLats) + pad,
+    minLng: Math.min(...allLngs) - pad,
+    maxLng: Math.max(...allLngs) + pad,
+  };
 }
 
 const severityColors: Record<string, string> = {
@@ -25,9 +31,19 @@ const vehicleIcons: Record<string, string> = {
 };
 
 export function IncidentMap({ onSelectIncident }: { onSelectIncident?: (id: string) => void }) {
+  const incidents = getIncidents();
+  const vehicles = getVehicles();
+  const cityConfig = getCityConfig();
+  const bounds = useMemo(() => getMapBounds(incidents, vehicles), [incidents, vehicles]);
+
+  function toPercent(lat: number, lng: number) {
+    const x = ((lng - bounds.minLng) / (bounds.maxLng - bounds.minLng)) * 100;
+    const y = ((bounds.maxLat - lat) / (bounds.maxLat - bounds.minLat)) * 100;
+    return { x: Math.max(5, Math.min(95, x)), y: Math.max(5, Math.min(95, y)) };
+  }
+
   return (
     <div className="relative w-full h-full min-h-[400px] bg-secondary rounded-lg overflow-hidden grid-pattern">
-      {/* Radar sweep overlay */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-10">
         <div className="w-[600px] h-[600px] rounded-full border border-success/30">
           <div className="absolute inset-0 flex items-center justify-center">
@@ -36,7 +52,6 @@ export function IncidentMap({ onSelectIncident }: { onSelectIncident?: (id: stri
         </div>
       </div>
 
-      {/* Grid lines */}
       <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-20">
         {[20, 40, 60, 80].map(p => (
           <g key={p}>
@@ -46,7 +61,6 @@ export function IncidentMap({ onSelectIncident }: { onSelectIncident?: (id: stri
         ))}
       </svg>
 
-      {/* Road lines */}
       <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-15">
         <line x1="10%" y1="30%" x2="90%" y2="30%" stroke="hsl(var(--muted-foreground))" strokeWidth="2" />
         <line x1="50%" y1="10%" x2="50%" y2="90%" stroke="hsl(var(--muted-foreground))" strokeWidth="2" />
@@ -54,8 +68,7 @@ export function IncidentMap({ onSelectIncident }: { onSelectIncident?: (id: stri
         <line x1="10%" y1="65%" x2="90%" y2="65%" stroke="hsl(var(--muted-foreground))" strokeWidth="1.5" />
       </svg>
 
-      {/* Incident markers */}
-      {mockIncidents.map((inc) => {
+      {incidents.map((inc) => {
         const pos = toPercent(inc.location.lat, inc.location.lng);
         return (
           <motion.button
@@ -87,8 +100,7 @@ export function IncidentMap({ onSelectIncident }: { onSelectIncident?: (id: stri
         );
       })}
 
-      {/* Vehicle markers */}
-      {mockVehicles.filter(v => v.status !== 'available').map((v) => {
+      {vehicles.filter(v => v.status !== 'available').map((v) => {
         const pos = toPercent(v.location.lat, v.location.lng);
         return (
           <motion.div
@@ -110,7 +122,6 @@ export function IncidentMap({ onSelectIncident }: { onSelectIncident?: (id: stri
         );
       })}
 
-      {/* Map legend */}
       <div className="absolute bottom-3 right-3 bg-card/90 backdrop-blur border border-border rounded-lg p-3">
         <p className="text-[10px] font-mono text-muted-foreground mb-2 uppercase tracking-wider">Legend</p>
         <div className="space-y-1.5">
@@ -129,10 +140,9 @@ export function IncidentMap({ onSelectIncident }: { onSelectIncident?: (id: stri
         </div>
       </div>
 
-      {/* Coordinates display */}
       <div className="absolute top-3 left-3 bg-card/90 backdrop-blur border border-border rounded-lg px-3 py-2">
-        <p className="text-[10px] font-mono text-success">NEW DELHI SECTOR</p>
-        <p className="text-[10px] font-mono text-muted-foreground">28.6°N 77.2°E</p>
+        <p className="text-[10px] font-mono text-success">{cityConfig.name.toUpperCase()} SECTOR</p>
+        <p className="text-[10px] font-mono text-muted-foreground">{cityConfig.center.lat.toFixed(1)}°N {cityConfig.center.lng.toFixed(1)}°E</p>
       </div>
     </div>
   );

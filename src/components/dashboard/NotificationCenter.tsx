@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { mockNotifications } from '@/data/mockData';
+import { getNotifications } from '@/data/mockData';
 import { Bell, Truck, RefreshCw, CheckCircle, AlertTriangle } from 'lucide-react';
 
 const typeConfig = {
@@ -10,6 +10,7 @@ const typeConfig = {
 };
 
 export function NotificationCenter() {
+  const mockNotifications = getNotifications();
   return (
     <div className="flex flex-col h-full">
       <div className="flex items-center justify-between p-4 border-b border-border">
