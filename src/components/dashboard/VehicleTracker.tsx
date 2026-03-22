@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { mockVehicles } from '@/data/mockData';
+import { getVehicles } from '@/data/mockData';
 import { StatusBadge } from './StatusBadge';
 import { Navigation, Gauge, Radio } from 'lucide-react';
 

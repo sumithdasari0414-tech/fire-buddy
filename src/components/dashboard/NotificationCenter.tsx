@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { mockNotifications } from '@/data/mockData';
+import { getNotifications } from '@/data/mockData';
 import { Bell, Truck, RefreshCw, CheckCircle, AlertTriangle } from 'lucide-react';
 
 const typeConfig = {

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { incidentLogs } from '@/data/mockData';
+import { getLogs } from '@/data/mockData';
 import { StatusBadge } from './StatusBadge';
 import { FileText, Download, Clock, MapPin } from 'lucide-react';
 
