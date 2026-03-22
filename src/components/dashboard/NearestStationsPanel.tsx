@@ -28,7 +28,7 @@ export function NearestStationsPanel({ incidentId }: { incidentId?: string }) {
             Relative to: {incident.location.street}
           </p>
         </div>
-        <StatusBadge variant="info">{fireStations.length} STATIONS</StatusBadge>
+        <StatusBadge variant="info">{stations.length} STATIONS</StatusBadge>
       </div>
 
       <div className="flex-1 overflow-y-auto divide-y divide-border">

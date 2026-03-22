@@ -1,11 +1,12 @@
 import { motion } from 'framer-motion';
-import { mockIncidents, getGoogleMapsLink } from '@/data/mockData';
+import { getIncidents, getGoogleMapsLink } from '@/data/mockData';
 import { StatusBadge } from './StatusBadge';
 import { MapPin, ExternalLink, Copy, Navigation, Building, Clock, Users, Cpu } from 'lucide-react';
 import { toast } from 'sonner';
 
 export function LocationPanel({ incidentId }: { incidentId?: string }) {
-  const incident = mockIncidents.find(i => i.id === incidentId) || mockIncidents[0];
+  const incidents = getIncidents();
+  const incident = incidents.find(i => i.id === incidentId) || incidents[0];
 
   const copyCoords = () => {
     navigator.clipboard.writeText(`${incident.location.lat}, ${incident.location.lng}`);
