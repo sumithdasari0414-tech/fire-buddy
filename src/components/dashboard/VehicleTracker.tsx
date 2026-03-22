@@ -17,6 +17,7 @@ const vehicleEmoji: Record<string, string> = {
 };
 
 export function VehicleTracker() {
+  const mockVehicles = getVehicles();
   return (
     <div className="flex flex-col h-full">
       <div className="flex items-center justify-between p-4 border-b border-border">
