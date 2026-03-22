@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, ReactNode } from 'react';
 import { cn } from '@/lib/utils';
-import { Flame, LayoutDashboard, MapPin, Truck, Bell, MessageSquare, ShieldAlert, Activity, ChevronLeft, ChevronRight, Camera, Building, FileText, Navigation } from 'lucide-react';
+import { Flame, LayoutDashboard, MapPin, Truck, Bell, MessageSquare, ShieldAlert, Activity, ChevronLeft, ChevronRight, Camera, Building, FileText, Navigation, Phone } from 'lucide-react';
 
 type NavItem = { id: string; label: string; icon: React.ElementType; badge?: number };
 
@@ -12,15 +12,17 @@ const navItems: NavItem[] = [
   { id: 'map', label: 'Live Map', icon: MapPin },
   { id: 'stations', label: 'Fire Stations', icon: Building },
   { id: 'vehicles', label: 'Fleet Tracker', icon: Truck },
+  { id: 'callers', label: 'Caller Tracking', icon: Phone },
   { id: 'history', label: 'Incident Logs', icon: FileText },
   { id: 'notifications', label: 'Alerts', icon: Bell, badge: 3 },
   { id: 'chat', label: 'AI Assistant', icon: MessageSquare },
   { id: 'safety', label: 'Safety Guide', icon: Activity },
 ];
 
-export function DashboardSidebar({ activeTab, onTabChange }: {
+export function DashboardSidebar({ activeTab, onTabChange, citySelector }: {
   activeTab: string;
   onTabChange: (tab: string) => void;
+  citySelector?: ReactNode;
 }) {
   const [collapsed, setCollapsed] = useState(false);
 
@@ -40,6 +42,13 @@ export function DashboardSidebar({ activeTab, onTabChange }: {
           </div>
         )}
       </div>
+
+      {/* City selector */}
+      {!collapsed && citySelector && (
+        <div className="px-3 py-2 border-b border-sidebar-border">
+          {citySelector}
+        </div>
+      )}
 
       <nav className="flex-1 p-2 space-y-0.5 mt-2 overflow-y-auto">
         {navItems.map(item => (
