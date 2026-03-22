@@ -1,11 +1,13 @@
 import { useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { fireStations, mockIncidents, calculateDistance, getEstimatedResponseTime } from '@/data/mockData';
+import { getStations, getIncidents, calculateDistance, getEstimatedResponseTime } from '@/data/mockData';
 import { StatusBadge } from './StatusBadge';
 import { Building, Phone, Truck, Clock, MapPin, ExternalLink } from 'lucide-react';
 
 export function NearestStationsPanel({ incidentId }: { incidentId?: string }) {
-  const incident = mockIncidents.find(i => i.id === incidentId) || mockIncidents[0];
+  const incidents = getIncidents();
+  const stations = getStations();
+  const incident = incidents.find(i => i.id === incidentId) || incidents[0];
 
   const sortedStations = useMemo(() => {
     return fireStations.map(station => {
