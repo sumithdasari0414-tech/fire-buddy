@@ -10,14 +10,14 @@ export function NearestStationsPanel({ incidentId }: { incidentId?: string }) {
   const incident = incidents.find(i => i.id === incidentId) || incidents[0];
 
   const sortedStations = useMemo(() => {
-    return fireStations.map(station => {
+    return stations.map(station => {
       const dist = calculateDistance(
         incident.location.lat, incident.location.lng,
         station.location.lat, station.location.lng
       );
       return { ...station, distance: dist, responseTime: getEstimatedResponseTime(dist) };
     }).sort((a, b) => a.distance - b.distance);
-  }, [incident]);
+  }, [incident, stations]);
 
   return (
     <div className="flex flex-col h-full">
