@@ -1,6 +1,6 @@
 import { useState, ReactNode } from 'react';
 import { cn } from '@/lib/utils';
-import { Flame, LayoutDashboard, MapPin, Truck, Bell, MessageSquare, ShieldAlert, Activity, ChevronLeft, ChevronRight, Camera, Building, FileText, Navigation, Phone } from 'lucide-react';
+import { Flame, LayoutDashboard, MapPin, Truck, Bell, MessageSquare, ShieldAlert, Activity, ChevronLeft, ChevronRight, Camera, Building, FileText, Navigation, Phone, PhoneCall } from 'lucide-react';
 
 type NavItem = { id: string; label: string; icon: React.ElementType; badge?: number };
 
