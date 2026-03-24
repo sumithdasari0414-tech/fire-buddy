@@ -12,6 +12,7 @@ import { NearestStationsPanel } from '@/components/dashboard/NearestStationsPane
 import { IncidentHistoryPanel } from '@/components/dashboard/IncidentHistoryPanel';
 import { LocationPanel } from '@/components/dashboard/LocationPanel';
 import { CallerTrackingPanel } from '@/components/dashboard/CallerTrackingPanel';
+import { TollFreeCenter } from '@/components/dashboard/TollFreeCenter';
 import { CitySelector } from '@/components/dashboard/CitySelector';
 import { setCurrentCity, getCurrentCity, CityKey, getIncidents } from '@/data/mockData';
 
