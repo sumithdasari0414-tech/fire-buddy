@@ -57,6 +57,8 @@ const Index = () => {
         return <VehicleTracker key={refreshKey} />;
       case 'callers':
         return <CallerTrackingPanel key={refreshKey} />;
+      case 'tollfree':
+        return <TollFreeCenter key={refreshKey} />;
       case 'history':
         return <IncidentHistoryPanel key={refreshKey} />;
       case 'notifications':

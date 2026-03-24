@@ -13,6 +13,7 @@ const navItems: NavItem[] = [
   { id: 'stations', label: 'Fire Stations', icon: Building },
   { id: 'vehicles', label: 'Fleet Tracker', icon: Truck },
   { id: 'callers', label: 'Caller Tracking', icon: Phone },
+  { id: 'tollfree', label: 'Toll-Free Line', icon: PhoneCall },
   { id: 'history', label: 'Incident Logs', icon: FileText },
   { id: 'notifications', label: 'Alerts', icon: Bell, badge: 3 },
   { id: 'chat', label: 'AI Assistant', icon: MessageSquare },
