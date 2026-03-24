@@ -12,6 +12,7 @@ import { NearestStationsPanel } from '@/components/dashboard/NearestStationsPane
 import { IncidentHistoryPanel } from '@/components/dashboard/IncidentHistoryPanel';
 import { LocationPanel } from '@/components/dashboard/LocationPanel';
 import { CallerTrackingPanel } from '@/components/dashboard/CallerTrackingPanel';
+import { TollFreeCenter } from '@/components/dashboard/TollFreeCenter';
 import { CitySelector } from '@/components/dashboard/CitySelector';
 import { setCurrentCity, getCurrentCity, CityKey, getIncidents } from '@/data/mockData';
 
@@ -56,6 +57,8 @@ const Index = () => {
         return <VehicleTracker key={refreshKey} />;
       case 'callers':
         return <CallerTrackingPanel key={refreshKey} />;
+      case 'tollfree':
+        return <TollFreeCenter key={refreshKey} />;
       case 'history':
         return <IncidentHistoryPanel key={refreshKey} />;
       case 'notifications':
