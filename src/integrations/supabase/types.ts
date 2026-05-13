@@ -14,7 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      sos_alerts: {
+        Row: {
+          accuracy: number | null
+          address: string | null
+          caller_name: string | null
+          caller_phone: string | null
+          city: string | null
+          created_at: string
+          emergency_type: string
+          id: string
+          language: string | null
+          latitude: number | null
+          longitude: number | null
+          notes: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          accuracy?: number | null
+          address?: string | null
+          caller_name?: string | null
+          caller_phone?: string | null
+          city?: string | null
+          created_at?: string
+          emergency_type?: string
+          id?: string
+          language?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          notes?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          accuracy?: number | null
+          address?: string | null
+          caller_name?: string | null
+          caller_phone?: string | null
+          city?: string | null
+          created_at?: string
+          emergency_type?: string
+          id?: string
+          language?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          notes?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
