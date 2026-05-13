@@ -14,7 +14,9 @@ import { LocationPanel } from '@/components/dashboard/LocationPanel';
 import { CallerTrackingPanel } from '@/components/dashboard/CallerTrackingPanel';
 import { TollFreeCenter } from '@/components/dashboard/TollFreeCenter';
 import { CitySelector } from '@/components/dashboard/CitySelector';
-import { setCurrentCity, getCurrentCity, CityKey, getIncidents } from '@/data/mockData';
+import { SosAlertsPanel } from '@/components/dashboard/SosAlertsPanel';
+import { LanguageSelector } from '@/components/LanguageSelector';
+import { setCurrentCity, getCurrentCity, CityKey } from '@/data/mockData';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -33,6 +35,8 @@ const Index = () => {
     switch (activeTab) {
       case 'overview':
         return <CommandOverview key={refreshKey} onSelectIncident={setSelectedIncident} onNavigate={setActiveTab} />;
+      case 'sos':
+        return <SosAlertsPanel />;
       case 'detection':
         return <FireDetectionPanel demoMode />;
       case 'incidents':
@@ -77,7 +81,12 @@ const Index = () => {
       <DashboardSidebar
         activeTab={activeTab}
         onTabChange={setActiveTab}
-        citySelector={<CitySelector currentCity={city} onCityChange={handleCityChange} />}
+        citySelector={
+          <div className="space-y-2">
+            <CitySelector currentCity={city} onCityChange={handleCityChange} />
+            <LanguageSelector compact />
+          </div>
+        }
       />
       <main className="flex-1 overflow-hidden">
         {renderContent()}
