@@ -1,11 +1,13 @@
 import { useState, ReactNode } from 'react';
 import { cn } from '@/lib/utils';
-import { Flame, LayoutDashboard, MapPin, Truck, Bell, MessageSquare, ShieldAlert, Activity, ChevronLeft, ChevronRight, Camera, Building, FileText, Navigation, Phone, PhoneCall } from 'lucide-react';
+import { Flame, LayoutDashboard, MapPin, Truck, Bell, MessageSquare, ShieldAlert, Activity, ChevronLeft, ChevronRight, Camera, Building, FileText, Navigation, Phone, PhoneCall, Siren, ArrowLeft } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 type NavItem = { id: string; label: string; icon: React.ElementType; badge?: number };
 
 const navItems: NavItem[] = [
   { id: 'overview', label: 'Command Center', icon: LayoutDashboard },
+  { id: 'sos', label: 'SOS Alerts', icon: Siren },
   { id: 'detection', label: 'Fire Detection', icon: Camera },
   { id: 'incidents', label: 'Incidents', icon: ShieldAlert },
   { id: 'location', label: 'Location Intel', icon: Navigation },
@@ -43,6 +45,14 @@ export function DashboardSidebar({ activeTab, onTabChange, citySelector }: {
           </div>
         )}
       </div>
+
+      {!collapsed && (
+        <div className="px-3 py-2 border-b border-sidebar-border">
+          <Link to="/" className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground">
+            <ArrowLeft className="w-3 h-3" /> Switch portal
+          </Link>
+        </div>
+      )}
 
       {/* City selector */}
       {!collapsed && citySelector && (
