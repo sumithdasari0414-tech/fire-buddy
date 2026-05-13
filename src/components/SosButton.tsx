@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { useI18n } from '@/i18n/I18nProvider';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { getCurrentCity, getCurrentCityConfig } from '@/data/mockData';
+import { getCurrentCity, getCityConfig } from '@/data/mockData';
 
 type EmType = 'fire' | 'medical' | 'police' | 'general';
 
@@ -50,7 +50,7 @@ export function SosButton() {
     setLocating(true);
     if (!navigator.geolocation) {
       // Fallback: use city center
-      const c = getCurrentCityConfig().center;
+      const c = getCityConfig().center;
       setCoords({ lat: c.lat, lng: c.lng, accuracy: 5000 });
       setLocating(false);
       return;
@@ -61,7 +61,7 @@ export function SosButton() {
         setLocating(false);
       },
       () => {
-        const c = getCurrentCityConfig().center;
+        const c = getCityConfig().center;
         setCoords({ lat: c.lat, lng: c.lng, accuracy: 5000 });
         setLocating(false);
       },
@@ -107,7 +107,7 @@ export function SosButton() {
     submittedRef.current = true;
     stopCountdown();
     setSubmitting(true);
-    const city = getCurrentCityConfig();
+    const city = getCityConfig();
     const { error } = await supabase.from('sos_alerts').insert({
       caller_name: name || null,
       caller_phone: phone || null,
