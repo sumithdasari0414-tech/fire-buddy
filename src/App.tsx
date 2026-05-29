@@ -5,8 +5,6 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
-import RoleLanding from "./pages/RoleLanding.tsx";
-import VictimPortal from "./pages/VictimPortal.tsx";
 import { I18nProvider } from "./i18n/I18nProvider";
 
 const queryClient = new QueryClient();
@@ -19,9 +17,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<RoleLanding />} />
-            <Route path="/responder" element={<Index />} />
-            <Route path="/victim" element={<VictimPortal />} />
+            <Route path="/" element={<Index />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
