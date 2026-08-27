@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { getIncidents, getVehicles, getNotifications, getCityConfig } from '@/data/mockData';
 import { StatusBadge } from './StatusBadge';
 import { IncidentMap } from './IncidentMap';
+import { SosEmergencyButton } from './SosEmergencyButton';
 import { Flame, Truck, Bell, Shield, Phone, MapPin, Activity, Zap, Camera, Building, FileText, Navigation } from 'lucide-react';
 
 function StatCard({ icon: Icon, label, value, sub, variant }: {
@@ -53,9 +54,10 @@ export function CommandOverview({ onSelectIncident, onNavigate }: {
             {new Date().toLocaleString()} — {cityConfig.state.toUpperCase()} · ALL SYSTEMS OPERATIONAL
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
+          <SosEmergencyButton />
           <StatusBadge variant="critical" pulse>LIVE</StatusBadge>
-          <div className="flex items-center gap-1 px-2 py-1 bg-success/10 rounded text-[10px] font-mono text-success">
+          <div className="hidden sm:flex items-center gap-1 px-2 py-1 bg-success/10 rounded text-[10px] font-mono text-success">
             <Zap className="w-3 h-3" /> 24/7 MONITORING
           </div>
         </div>
