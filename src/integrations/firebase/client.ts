@@ -5,12 +5,13 @@ import { initializeApp, getApps, getApp, type FirebaseOptions } from "firebase/a
 import { getFirestore } from "firebase/firestore";
 
 export const firebaseConfig: FirebaseOptions = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID",
+  apiKey: "AIzaSyATqchO2SbhQR3ToUOLqrehGOFy-cSoMFg",
+  authDomain: "fire-buddy-f33c5.firebaseapp.com",
+  projectId: "fire-buddy-f33c5",
+  storageBucket: "fire-buddy-f33c5.firebasestorage.app",
+  messagingSenderId: "870857085995",
+  appId: "1:870857085995:web:d83a3777d6f2ab272f066e",
+  measurementId: "G-1W33N6FJXV",
 };
 
 export const isFirebaseConfigured = !firebaseConfig.apiKey?.startsWith("YOUR_");
