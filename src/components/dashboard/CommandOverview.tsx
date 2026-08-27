@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { getIncidents, getVehicles, getNotifications, getCityConfig } from '@/data/mockData';
 import { StatusBadge } from './StatusBadge';
 import { IncidentMap } from './IncidentMap';
+import { SosEmergencyButton } from './SosEmergencyButton';
 import { Flame, Truck, Bell, Shield, Phone, MapPin, Activity, Zap, Camera, Building, FileText, Navigation } from 'lucide-react';
 
 function StatCard({ icon: Icon, label, value, sub, variant }: {
