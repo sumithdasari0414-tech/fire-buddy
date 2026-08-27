@@ -54,9 +54,10 @@ export function CommandOverview({ onSelectIncident, onNavigate }: {
             {new Date().toLocaleString()} — {cityConfig.state.toUpperCase()} · ALL SYSTEMS OPERATIONAL
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
+          <SosEmergencyButton />
           <StatusBadge variant="critical" pulse>LIVE</StatusBadge>
-          <div className="flex items-center gap-1 px-2 py-1 bg-success/10 rounded text-[10px] font-mono text-success">
+          <div className="hidden sm:flex items-center gap-1 px-2 py-1 bg-success/10 rounded text-[10px] font-mono text-success">
             <Zap className="w-3 h-3" /> 24/7 MONITORING
           </div>
         </div>
