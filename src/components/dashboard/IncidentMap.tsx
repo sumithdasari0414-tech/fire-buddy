@@ -33,7 +33,7 @@ const vehicleIcons: Record<string, string> = {
 };
 
 export function IncidentMap({ onSelectIncident }: { onSelectIncident?: (id: string) => void }) {
-  const incidents = getIncidents();
+  const { incidents, loading, error } = useIncidents();
   const vehicles = getVehicles();
   const cityConfig = getCityConfig();
   const bounds = useMemo(() => getMapBounds(incidents, vehicles), [incidents, vehicles]);
