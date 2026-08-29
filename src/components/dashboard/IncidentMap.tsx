@@ -46,6 +46,18 @@ export function IncidentMap({ onSelectIncident }: { onSelectIncident?: (id: stri
 
   return (
     <div className="relative w-full h-full min-h-[400px] bg-secondary rounded-lg overflow-hidden grid-pattern">
+      {loading && (
+        <div className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-2 bg-background/60">
+          <Loader2 className="w-6 h-6 animate-spin text-primary" />
+          <p className="text-xs font-mono text-muted-foreground">Loading incidents…</p>
+        </div>
+      )}
+      {!loading && error && (
+        <div className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-2 bg-background/60 p-4 text-center">
+          <AlertTriangle className="w-6 h-6 text-critical" />
+          <p className="text-xs font-mono text-muted-foreground">Incident data unavailable</p>
+        </div>
+      )}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-10">
         <div className="w-[600px] h-[600px] rounded-full border border-success/30">
           <div className="absolute inset-0 flex items-center justify-center">

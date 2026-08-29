@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion';
-import { getIncidents, getVehicles, getNotifications, getCityConfig } from '@/data/mockData';
+import { getVehicles, getNotifications, getCityConfig } from '@/data/mockData';
+import { useIncidents } from '@/hooks/useIncidents';
+import { IncidentsLoading, IncidentsError, IncidentsEmpty } from './IncidentsDataState';
 import { StatusBadge } from './StatusBadge';
 import { IncidentMap } from './IncidentMap';
 import { SosEmergencyButton } from './SosEmergencyButton';

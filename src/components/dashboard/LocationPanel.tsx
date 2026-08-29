@@ -1,12 +1,19 @@
 import { motion } from 'framer-motion';
-import { getIncidents, getGoogleMapsLink } from '@/data/mockData';
+import { getGoogleMapsLink } from '@/data/mockData';
+import { useIncidents } from '@/hooks/useIncidents';
 import { StatusBadge } from './StatusBadge';
+import { IncidentsLoading, IncidentsError, IncidentsEmpty } from './IncidentsDataState';
 import { MapPin, ExternalLink, Copy, Navigation, Building, Clock, Users, Cpu } from 'lucide-react';
 import { toast } from 'sonner';
 
 export function LocationPanel({ incidentId }: { incidentId?: string }) {
-  const incidents = getIncidents();
+  const { incidents, loading, error, reload } = useIncidents();
   const incident = incidents.find(i => i.id === incidentId) || incidents[0];
+
+  if (loading) return <IncidentsLoading />;
+  if (error) return <IncidentsError error={error} onRetry={reload} />;
+  if (!incident) return <IncidentsEmpty />;
+
 
   const copyCoords = () => {
     navigator.clipboard.writeText(`${incident.location.lat}, ${incident.location.lng}`);
