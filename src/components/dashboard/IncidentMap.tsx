@@ -1,8 +1,10 @@
 import { useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { getIncidents, getVehicles, getCityConfig } from '@/data/mockData';
+import { getVehicles, getCityConfig } from '@/data/mockData';
 import type { Incident, Vehicle } from '@/data/mockData';
+import { useIncidents } from '@/hooks/useIncidents';
 import { StatusBadge } from './StatusBadge';
+import { Loader2, AlertTriangle } from 'lucide-react';
 
 function getMapBounds(incidents: Incident[], vehicles: Vehicle[]) {
   const allLats = [...incidents.map(i => i.location.lat), ...vehicles.map(v => v.location.lat)];
