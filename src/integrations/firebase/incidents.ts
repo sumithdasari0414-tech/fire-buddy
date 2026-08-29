@@ -18,7 +18,10 @@ export async function testFirestoreConnection() {
   }
   try {
     const docs = await fetchIncidents();
-    console.log(`[firebase] Connected. incidents docs read: ${docs.length}`, docs);
+    const titles = docs.map((d) => (d.title as string | undefined) ?? "(no title)");
+    console.log(`[firebase] Connected. Incidents documents read: ${docs.length}`);
+    console.log(`[firebase] Incident titles:`, titles);
+    console.log(`[firebase] Full documents:`, docs);
   } catch (err) {
     console.error("[firebase] Failed to read incidents collection:", err);
   }
