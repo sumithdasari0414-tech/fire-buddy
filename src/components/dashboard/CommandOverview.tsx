@@ -35,7 +35,7 @@ export function CommandOverview({ onSelectIncident, onNavigate }: {
   onSelectIncident: (id: string) => void;
   onNavigate: (tab: string) => void;
 }) {
-  const incidents = getIncidents();
+  const { incidents, loading: incidentsLoading, error: incidentsError, reload: reloadIncidents } = useIncidents();
   const vehicles = getVehicles();
   const notifications = getNotifications();
   const cityConfig = getCityConfig();
