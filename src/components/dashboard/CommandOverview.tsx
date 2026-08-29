@@ -67,7 +67,7 @@ export function CommandOverview({ onSelectIncident, onNavigate }: {
 
       <div className="p-4 space-y-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <StatCard icon={Flame} label="Active Incidents" value={activeIncidents} sub={`${incidents.length} total today`} variant="critical" />
+          <StatCard icon={Flame} label="Active Incidents" value={incidentsLoading ? '…' : incidentsError ? '!' : activeIncidents} sub={incidentsError ? 'Data unavailable' : `${incidents.length} total today`} variant="critical" />
           <StatCard icon={Truck} label="Deployed Units" value={deployedVehicles} sub={`${vehicles.length} total fleet`} variant="warning" />
           <StatCard icon={Bell} label="Unread Alerts" value={unreadAlerts} sub={`${notifications.length} total`} variant="info" />
           <StatCard icon={Shield} label="Response Time" value="4.2m" sub="Avg today" variant="success" />
@@ -102,6 +102,11 @@ export function CommandOverview({ onSelectIncident, onNavigate }: {
         <div>
           <h3 className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-wider mb-2">Priority Incidents</h3>
           <div className="space-y-2">
+            {incidentsLoading && <div className="rounded-lg border border-border bg-secondary"><IncidentsLoading /></div>}
+            {incidentsError && <div className="rounded-lg border border-border bg-secondary"><IncidentsError error={incidentsError} onRetry={reloadIncidents} /></div>}
+            {!incidentsLoading && !incidentsError && incidents.length === 0 && (
+              <div className="rounded-lg border border-border bg-secondary"><IncidentsEmpty /></div>
+            )}
             {incidents.filter(i => i.severity === 'critical' || i.severity === 'high').map(inc => (
               <button
                 key={inc.id}
