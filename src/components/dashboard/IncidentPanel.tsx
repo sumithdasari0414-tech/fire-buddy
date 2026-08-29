@@ -1,15 +1,20 @@
 import { motion } from 'framer-motion';
-import { getIncidents } from '@/data/mockData';
 import type { Incident } from '@/data/mockData';
+import { useIncidents } from '@/hooks/useIncidents';
 import { StatusBadge } from './StatusBadge';
+import { IncidentsLoading, IncidentsError, IncidentsEmpty } from './IncidentsDataState';
 import { MapPin, Clock, Building, Maximize2, AlertTriangle } from 'lucide-react';
 
 export function IncidentPanel({ selectedId, onSelect }: {
   selectedId?: string;
   onSelect: (id: string) => void;
 }) {
-  const mockIncidents = getIncidents();
+  const { incidents: mockIncidents, loading, error, reload } = useIncidents();
   const selected = mockIncidents.find(i => i.id === selectedId);
+
+  if (loading) return <IncidentsLoading />;
+  if (error) return <IncidentsError error={error} onRetry={reload} />;
+  if (mockIncidents.length === 0) return <IncidentsEmpty />;
 
   return (
     <div className="flex flex-col h-full">

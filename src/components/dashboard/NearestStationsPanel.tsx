@@ -1,15 +1,18 @@
 import { useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { getStations, getIncidents, calculateDistance, getEstimatedResponseTime } from '@/data/mockData';
+import { getStations, calculateDistance, getEstimatedResponseTime } from '@/data/mockData';
+import { useIncidents } from '@/hooks/useIncidents';
 import { StatusBadge } from './StatusBadge';
+import { IncidentsLoading, IncidentsError, IncidentsEmpty } from './IncidentsDataState';
 import { Building, Phone, Truck, Clock, MapPin, ExternalLink } from 'lucide-react';
 
 export function NearestStationsPanel({ incidentId }: { incidentId?: string }) {
-  const incidents = getIncidents();
+  const { incidents, loading, error, reload } = useIncidents();
   const stations = getStations();
   const incident = incidents.find(i => i.id === incidentId) || incidents[0];
 
   const sortedStations = useMemo(() => {
+    if (!incident) return [];
     return stations.map(station => {
       const dist = calculateDistance(
         incident.location.lat, incident.location.lng,
@@ -18,6 +21,10 @@ export function NearestStationsPanel({ incidentId }: { incidentId?: string }) {
       return { ...station, distance: dist, responseTime: getEstimatedResponseTime(dist) };
     }).sort((a, b) => a.distance - b.distance);
   }, [incident, stations]);
+
+  if (loading) return <IncidentsLoading />;
+  if (error) return <IncidentsError error={error} onRetry={reload} />;
+  if (!incident) return <IncidentsEmpty />;
 
   return (
     <div className="flex flex-col h-full">
