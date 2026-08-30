@@ -16,6 +16,7 @@ import { TollFreeCenter } from '@/components/dashboard/TollFreeCenter';
 import { CitySelector } from '@/components/dashboard/CitySelector';
 import { SosAlertsPanel } from '@/components/dashboard/SosAlertsPanel';
 import { LanguageSelector } from '@/components/LanguageSelector';
+import { ConnectionStatusBanner } from '@/components/dashboard/ConnectionStatusBanner';
 import { setCurrentCity, getCurrentCity, CityKey } from '@/data/mockData';
 
 const Index = () => {
@@ -88,8 +89,11 @@ const Index = () => {
           </div>
         }
       />
-      <main className="flex-1 overflow-hidden">
-        {renderContent()}
+      <main className="flex-1 overflow-hidden flex flex-col">
+        <ConnectionStatusBanner />
+        <div className="flex-1 overflow-hidden">
+          {renderContent()}
+        </div>
       </main>
     </div>
   );

@@ -1,9 +1,11 @@
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import type { Incident } from '@/data/mockData';
 import { useIncidents } from '@/hooks/useIncidents';
+import { fetchSourcesForIncident, type IncidentSource } from '@/integrations/firebase/sources';
 import { StatusBadge } from './StatusBadge';
 import { IncidentsLoading, IncidentsError, IncidentsEmpty } from './IncidentsDataState';
-import { MapPin, Clock, Building, Maximize2, AlertTriangle } from 'lucide-react';
+import { MapPin, Clock, Building, Maximize2, AlertTriangle, Link2, ExternalLink, Loader2 } from 'lucide-react';
 
 export function IncidentPanel({ selectedId, onSelect }: {
   selectedId?: string;
@@ -126,7 +128,65 @@ function IncidentDetail({ incident, onBack }: { incident: Incident; onBack: () =
           />
         </div>
       </div>
+
+      <IncidentSources incidentId={incident.id} />
     </motion.div>
+  );
+}
+
+// Provenance: sources & verification records linked to this incident.
+function IncidentSources({ incidentId }: { incidentId: string }) {
+  const [sources, setSources] = useState<IncidentSource[] | null>(null);
+  const [failed, setFailed] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    setSources(null);
+    setFailed(false);
+    fetchSourcesForIncident(incidentId)
+      .then((s) => { if (!cancelled) setSources(s); })
+      .catch(() => { if (!cancelled) setFailed(true); });
+    return () => { cancelled = true; };
+  }, [incidentId]);
+
+  return (
+    <div className="bg-secondary rounded-lg p-3">
+      <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider mb-2 flex items-center gap-1.5">
+        <Link2 className="w-3 h-3" /> Sources &amp; Verification
+      </p>
+      {sources === null && !failed ? (
+        <p className="text-[11px] text-muted-foreground font-mono flex items-center gap-1.5">
+          <Loader2 className="w-3 h-3 animate-spin" /> Loading sources…
+        </p>
+      ) : failed ? (
+        <p className="text-[11px] text-muted-foreground font-mono">Source records unavailable.</p>
+      ) : sources.length === 0 ? (
+        <p className="text-[11px] text-muted-foreground font-mono">No verification sources on record.</p>
+      ) : (
+        <div className="space-y-2">
+          {sources.map((s) => (
+            <div key={s.id} className="border border-border rounded-md p-2">
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-xs font-medium truncate">{s.sourceName}</p>
+                <StatusBadge variant="info">{s.sourceType}</StatusBadge>
+              </div>
+              <p className="text-[10px] text-muted-foreground font-mono mt-1">Published: {s.publicationDate}</p>
+              {s.notes !== '—' && <p className="text-[11px] text-muted-foreground mt-1">{s.notes}</p>}
+              {s.sourceUrl && (
+                <a
+                  href={s.sourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-[10px] font-mono text-info hover:underline mt-1"
+                >
+                  <ExternalLink className="w-2.5 h-2.5" /> View source
+                </a>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 
