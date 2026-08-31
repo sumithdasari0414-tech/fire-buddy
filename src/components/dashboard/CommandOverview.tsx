@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { getVehicles, getNotifications, getCityConfig } from '@/data/mockData';
+import { getNotifications, getCityConfig } from '@/data/mockData';
+import { useVehicles } from '@/hooks/useVehicles';
 import { useIncidents } from '@/hooks/useIncidents';
 import { IncidentsLoading, IncidentsError, IncidentsEmpty } from './IncidentsDataState';
 import { StatusBadge } from './StatusBadge';
@@ -36,12 +37,12 @@ export function CommandOverview({ onSelectIncident, onNavigate }: {
   onNavigate: (tab: string) => void;
 }) {
   const { incidents, loading: incidentsLoading, error: incidentsError, reload: reloadIncidents } = useIncidents();
-  const vehicles = getVehicles();
+  const { vehicles, error: vehiclesError } = useVehicles();
   const notifications = getNotifications();
   const cityConfig = getCityConfig();
 
-  const activeIncidents = incidents.filter(i => i.status === 'active').length;
-  const deployedVehicles = vehicles.filter(v => v.status !== 'available').length;
+  const activeIncidents = incidents.filter(i => i.status !== 'resolved').length;
+  const deployedVehicles = vehicles.filter(v => v.status === 'dispatched' || v.status === 'en_route' || v.status === 'arrived').length;
   const unreadAlerts = notifications.filter(n => !n.read).length;
 
   return (
@@ -68,9 +69,9 @@ export function CommandOverview({ onSelectIncident, onNavigate }: {
       <div className="p-4 space-y-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <StatCard icon={Flame} label="Active Incidents" value={incidentsLoading ? '…' : incidentsError ? '!' : activeIncidents} sub={incidentsError ? 'Data unavailable' : `${incidents.length} total today`} variant="critical" />
-          <StatCard icon={Truck} label="Deployed Units" value={deployedVehicles} sub={`${vehicles.length} total fleet`} variant="warning" />
+          <StatCard icon={Truck} label="Deployed Units" value={vehiclesError ? '!' : deployedVehicles} sub={vehiclesError ? 'Fleet feed unavailable' : `${vehicles.length} registered units`} variant="warning" />
           <StatCard icon={Bell} label="Unread Alerts" value={unreadAlerts} sub={`${notifications.length} total`} variant="info" />
-          <StatCard icon={Shield} label="Response Time" value="4.2m" sub="Avg today" variant="success" />
+          <StatCard icon={Shield} label="Live GPS Units" value={vehicles.filter(v => v.location).length} sub="Reporting real position" variant="success" />
         </div>
 
         <div className="rounded-lg border border-border overflow-hidden" style={{ height: '340px' }}>

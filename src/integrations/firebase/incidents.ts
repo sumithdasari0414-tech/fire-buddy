@@ -4,6 +4,7 @@
 import { collection, getDocs, limit, query, Timestamp, GeoPoint } from "firebase/firestore";
 import { db, isFirebaseConfigured } from "./client";
 import type { Incident } from "@/data/mockData";
+import { asLifecycle } from "./vehicles";
 
 export type FirestoreIncident = { id: string } & Record<string, unknown>;
 
@@ -55,11 +56,18 @@ export function mapFirestoreIncident(doc: FirestoreIncident): Incident {
     ? rawSeverity
     : "medium") as Incident["severity"];
 
-  const rawStatus = asString(doc["status"], "active").toLowerCase();
-  const status: Incident["status"] =
-    rawStatus === "resolved" || rawStatus === "closed" ? "resolved"
-    : rawStatus === "dispatched" || rawStatus === "responding" ? "dispatched"
-    : "active";
+  const rawStatus = asString(doc["status"], "unverified").toLowerCase().replace(/[\s-]+/g, "_");
+  // Legacy / provider wording mapped onto the responder lifecycle.
+  const statusAliases: Record<string, Incident["status"]> = {
+    active: "unverified",
+    new: "unverified",
+    open: "unverified",
+    responding: "en_route",
+    on_scene: "arrived",
+    closed: "resolved",
+    contained: "resolved",
+  };
+  const status: Incident["status"] = statusAliases[rawStatus] ?? asLifecycle(rawStatus, "unverified");
 
   const incidentDate = asTimestamp(doc["incident date"]) ?? asTimestamp(doc["created at"]);
   const locationName = asString(doc["location name"], "Unknown location");
@@ -83,7 +91,7 @@ export function mapFirestoreIncident(doc: FirestoreIncident): Incident {
     timestamp: formatTimestamp(incidentDate),
     status,
     description: asString(doc["description"], title),
-    falseAlarmScore: asNumber(doc["false alarm score"], rawStatus === "verified" ? 5 : 25),
+    falseAlarmScore: asNumber(doc["false alarm score"], status === "unverified" ? 25 : 5),
     spreadPrediction: "moderate",
     affectedArea: asString(doc["affected area"], "—"),
     buildingType: fireType ? `${fireType.charAt(0).toUpperCase()}${fireType.slice(1)}` : "—",
