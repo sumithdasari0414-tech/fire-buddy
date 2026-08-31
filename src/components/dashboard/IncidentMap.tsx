@@ -1,14 +1,16 @@
 import { useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { getVehicles, getCityConfig } from '@/data/mockData';
-import type { Incident, Vehicle } from '@/data/mockData';
+import { getCityConfig } from '@/data/mockData';
+import type { Incident } from '@/data/mockData';
 import { useIncidents } from '@/hooks/useIncidents';
+import { useVehicles } from '@/hooks/useVehicles';
+import type { LiveVehicle } from '@/integrations/firebase/vehicles';
 import { StatusBadge } from './StatusBadge';
 import { Loader2, AlertTriangle } from 'lucide-react';
 
-function getMapBounds(incidents: Incident[], vehicles: Vehicle[]) {
-  const allLats = [...incidents.map(i => i.location.lat), ...vehicles.map(v => v.location.lat)];
-  const allLngs = [...incidents.map(i => i.location.lng), ...vehicles.map(v => v.location.lng)];
+function getMapBounds(incidents: Incident[], vehicles: { lat: number; lng: number }[]) {
+  const allLats = [...incidents.map(i => i.location.lat), ...vehicles.map(v => v.lat)];
+  const allLngs = [...incidents.map(i => i.location.lng), ...vehicles.map(v => v.lng)];
   if (allLats.length === 0) return { minLat: 0, maxLat: 1, minLng: 0, maxLng: 1 };
   const pad = 0.02;
   return {
@@ -34,9 +36,15 @@ const vehicleIcons: Record<string, string> = {
 
 export function IncidentMap({ onSelectIncident }: { onSelectIncident?: (id: string) => void }) {
   const { incidents, loading, error } = useIncidents();
-  const vehicles = getVehicles();
+  const { vehicles: allVehicles } = useVehicles();
+  // Only vehicles with a real reported GPS fix are plotted.
+  const vehicles = useMemo(
+    () => allVehicles.filter((v): v is LiveVehicle & { location: { lat: number; lng: number } } => !!v.location),
+    [allVehicles]
+  );
   const cityConfig = getCityConfig();
-  const bounds = useMemo(() => getMapBounds(incidents, vehicles), [incidents, vehicles]);
+  const points = useMemo(() => vehicles.map(v => v.location), [vehicles]);
+  const bounds = useMemo(() => getMapBounds(incidents, points), [incidents, points]);
 
   function toPercent(lat: number, lng: number) {
     const x = ((lng - bounds.minLng) / (bounds.maxLng - bounds.minLng)) * 100;
@@ -114,7 +122,7 @@ export function IncidentMap({ onSelectIncident }: { onSelectIncident?: (id: stri
         );
       })}
 
-      {vehicles.filter(v => v.status !== 'available').map((v) => {
+      {vehicles.filter(v => v.status !== 'resolved').map((v) => {
         const pos = toPercent(v.location.lat, v.location.lng);
         return (
           <motion.div
