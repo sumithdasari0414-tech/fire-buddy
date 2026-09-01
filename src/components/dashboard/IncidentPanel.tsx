@@ -22,7 +22,7 @@ export function IncidentPanel({ selectedId, onSelect }: {
     <div className="flex flex-col h-full">
       <div className="flex items-center justify-between p-4 border-b border-border">
         <h2 className="text-sm font-bold tracking-tight">ACTIVE INCIDENTS</h2>
-        <StatusBadge variant="critical" pulse>{mockIncidents.filter(i => i.status === 'active').length} ACTIVE</StatusBadge>
+        <StatusBadge variant="critical" pulse>{mockIncidents.filter(i => i.status !== 'resolved').length} ACTIVE</StatusBadge>
       </div>
 
       <div className="flex-1 overflow-y-auto">
