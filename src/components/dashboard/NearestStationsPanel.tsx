@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { getStations, calculateDistance, getEstimatedResponseTime } from '@/data/mockData';
+import { getStations, calculateDistance } from '@/data/mockData';
+import { useRoute, formatDuration } from '@/hooks/useRoute';
 import { useIncidents } from '@/hooks/useIncidents';
 import { StatusBadge } from './StatusBadge';
 import { IncidentsLoading, IncidentsError, IncidentsEmpty } from './IncidentsDataState';
