@@ -137,7 +137,7 @@ export function IncidentMap({ onSelectIncident }: { onSelectIncident?: (id: stri
             <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 hidden group-hover:block z-20">
               <div className="bg-card border border-border rounded px-2 py-1 shadow-xl">
                 <p className="text-[10px] font-mono font-bold text-foreground">{v.callsign}</p>
-                {v.eta && <p className="text-[10px] text-success">ETA: {v.eta}</p>}
+                {v.speedKmh !== null && <p className="text-[10px] text-success">{v.speedKmh} km/h</p>}
               </div>
             </div>
           </motion.div>

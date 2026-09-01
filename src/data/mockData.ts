@@ -173,7 +173,7 @@ const cityData: Record<CityKey, {
       { id: 'LOG-006', incidentId: 'INC-003', timestamp: '2026-03-22 14:16:10', event: 'Fire detected at Sultan Bazaar', severity: 'high', location: '88 Sultan Bazaar', status: 'detected', details: 'Electrical fire in fabric market. Combustible materials.' },
     ],
     callers: [
-      { id: 'CALL-001', name: 'Rajesh Kumar', phone: '+91-9876543210', location: { lat: 17.3620, lng: 78.4750 }, address: '12 Abids Road, Koti, Hyderabad', callTime: '14:32:01', duration: '2m 34s', status: 'unverified', severity: 'critical', description: 'Heavy smoke from 5th floor of commercial building. People trapped.', locationType: 'gps', accuracy: '±3m' },
+      { id: 'CALL-001', name: 'Rajesh Kumar', phone: '+91-9876543210', location: { lat: 17.3620, lng: 78.4750 }, address: '12 Abids Road, Koti, Hyderabad', callTime: '14:32:01', duration: '2m 34s', status: 'active', severity: 'critical', description: 'Heavy smoke from 5th floor of commercial building. People trapped.', locationType: 'gps', accuracy: '±3m' },
       { id: 'CALL-002', name: 'Priya Sharma', phone: '+91-9123456789', location: { lat: 17.4405, lng: 78.3492 }, address: '45 KPHB Colony Phase 6, Hyderabad', callTime: '14:24:18', duration: '1m 12s', status: 'completed', severity: 'medium', description: 'Kitchen fire, gas smell. Family evacuated safely.', locationType: 'gps', accuracy: '±5m' },
       { id: 'CALL-003', name: 'Mohammed Irfan', phone: '+91-9988776655', location: { lat: 17.3955, lng: 78.4405 }, address: 'Near Sultan Bazaar crossing, Hyderabad', callTime: '14:15:55', duration: '3m 08s', status: 'completed', severity: 'high', description: 'Electrical sparks in fabric godown. Fire spreading to adjacent shop.', locationType: 'tower', accuracy: '±25m' },
       { id: 'CALL-004', name: 'Lakshmi Devi', phone: '+91-9876501234', location: { lat: 17.3850, lng: 78.4600 }, address: 'Nampally Station Road, Hyderabad', callTime: '14:10:30', duration: '0m 45s', status: 'missed', severity: 'low', description: 'Disconnected call. Location traced near railway station.', locationType: 'tower', accuracy: '±50m' },
@@ -240,7 +240,7 @@ const cityData: Record<CityKey, {
       { id: 'LOG-006', incidentId: 'INC-003', timestamp: '2026-03-22 14:19:10', event: 'Fire detected at Sarojini Nagar', severity: 'high', location: '88 Sarojini Nagar Market', status: 'detected', details: 'Large fire. Combustible materials.' },
     ],
     callers: [
-      { id: 'CALL-001', name: 'Amit Verma', phone: '+91-9811234567', location: { lat: 28.6142, lng: 77.2095 }, address: '42 Connaught Place, New Delhi', callTime: '14:31:55', duration: '2m 10s', status: 'unverified', severity: 'critical', description: 'Smoke pouring from 3rd floor windows. People screaming.', locationType: 'gps', accuracy: '±4m' },
+      { id: 'CALL-001', name: 'Amit Verma', phone: '+91-9811234567', location: { lat: 28.6142, lng: 77.2095 }, address: '42 Connaught Place, New Delhi', callTime: '14:31:55', duration: '2m 10s', status: 'active', severity: 'critical', description: 'Smoke pouring from 3rd floor windows. People screaming.', locationType: 'gps', accuracy: '±4m' },
       { id: 'CALL-002', name: 'Sunita Devi', phone: '+91-9899887766', location: { lat: 28.6310, lng: 77.2180 }, address: '15 Kashmere Gate, New Delhi', callTime: '14:26:10', duration: '1m 30s', status: 'completed', severity: 'medium', description: 'Kitchen caught fire. Family is outside.', locationType: 'gps', accuracy: '±6m' },
       { id: 'CALL-003', name: 'Vikram Singh', phone: '+91-9650012345', location: { lat: 28.5675, lng: 77.2105 }, address: 'Sarojini Nagar Market, New Delhi', callTime: '14:18:42', duration: '2m 45s', status: 'completed', severity: 'high', description: 'Warehouse on fire. Chemicals stored inside.', locationType: 'tower', accuracy: '±20m' },
     ],
@@ -302,7 +302,7 @@ const cityData: Record<CityKey, {
       { id: 'LOG-003', incidentId: 'INC-002', timestamp: '2026-03-22 14:22:22', event: 'Phone call — fire in chawl', severity: 'high', location: '12 Dadar West', status: 'detected', details: 'Multiple families affected.' },
     ],
     callers: [
-      { id: 'CALL-001', name: 'Ravi Patel', phone: '+91-9820012345', location: { lat: 18.9445, lng: 72.8240 }, address: '78 Colaba Causeway, Mumbai', callTime: '14:30:50', duration: '3m 15s', status: 'unverified', severity: 'critical', description: 'Old building on fire near Taj Hotel. Smoke everywhere.', locationType: 'gps', accuracy: '±3m' },
+      { id: 'CALL-001', name: 'Ravi Patel', phone: '+91-9820012345', location: { lat: 18.9445, lng: 72.8240 }, address: '78 Colaba Causeway, Mumbai', callTime: '14:30:50', duration: '3m 15s', status: 'active', severity: 'critical', description: 'Old building on fire near Taj Hotel. Smoke everywhere.', locationType: 'gps', accuracy: '±3m' },
       { id: 'CALL-002', name: 'Meena Jadhav', phone: '+91-9867654321', location: { lat: 19.0180, lng: 72.8565 }, address: 'Dadar West Chawl, Mumbai', callTime: '14:22:10', duration: '2m 40s', status: 'completed', severity: 'high', description: 'Fire spreading in chawl. Many families inside.', locationType: 'gps', accuracy: '±5m' },
     ],
   },
@@ -340,7 +340,7 @@ const cityData: Record<CityKey, {
       { id: 'LOG-001', incidentId: 'INC-001', timestamp: '2026-03-22 14:30:04', event: 'Fire detected in server room', severity: 'critical', location: '22 MG Road', status: 'detected', details: 'Electrical fire. Smoke detectors triggered. AI confidence: 94%.' },
     ],
     callers: [
-      { id: 'CALL-001', name: 'Suresh Nair', phone: '+91-9845012345', location: { lat: 12.9720, lng: 77.5950 }, address: '22 MG Road, Brigade Gateway, Bengaluru', callTime: '14:29:45', duration: '2m 30s', status: 'unverified', severity: 'critical', description: 'Server room smoking heavily. Building security evacuating.', locationType: 'gps', accuracy: '±4m' },
+      { id: 'CALL-001', name: 'Suresh Nair', phone: '+91-9845012345', location: { lat: 12.9720, lng: 77.5950 }, address: '22 MG Road, Brigade Gateway, Bengaluru', callTime: '14:29:45', duration: '2m 30s', status: 'active', severity: 'critical', description: 'Server room smoking heavily. Building security evacuating.', locationType: 'gps', accuracy: '±4m' },
     ],
   },
   chennai: {
@@ -376,7 +376,7 @@ const cityData: Record<CityKey, {
       { id: 'LOG-001', incidentId: 'INC-001', timestamp: '2026-03-22 14:29:04', event: 'Fire detected at Anna Salai', severity: 'high', location: '55 Anna Salai', status: 'detected', details: 'Office building fire. 30 people inside.' },
     ],
     callers: [
-      { id: 'CALL-001', name: 'Karthik Sundaram', phone: '+91-9840056789', location: { lat: 13.0830, lng: 80.2710 }, address: '55 Anna Salai, Teynampet, Chennai', callTime: '14:28:30', duration: '3m 05s', status: 'unverified', severity: 'high', description: 'Fire on 6th floor. Smoke in stairwell. People trying to evacuate.', locationType: 'gps', accuracy: '±5m' },
+      { id: 'CALL-001', name: 'Karthik Sundaram', phone: '+91-9840056789', location: { lat: 13.0830, lng: 80.2710 }, address: '55 Anna Salai, Teynampet, Chennai', callTime: '14:28:30', duration: '3m 05s', status: 'active', severity: 'high', description: 'Fire on 6th floor. Smoke in stairwell. People trying to evacuate.', locationType: 'gps', accuracy: '±5m' },
     ],
   },
   kolkata: {
@@ -402,7 +402,7 @@ const cityData: Record<CityKey, {
       { id: 'LOG-001', incidentId: 'INC-001', timestamp: '2026-03-22 14:31:04', event: 'Fire detected at Park Street', severity: 'critical', location: '14 Park Street', status: 'detected', details: 'Heritage building. Gas leak. AI confidence: 95%.' },
     ],
     callers: [
-      { id: 'CALL-001', name: 'Arnab Chatterjee', phone: '+91-9831012345', location: { lat: 22.5728, lng: 88.3642 }, address: '14 Park Street, Kolkata', callTime: '14:30:45', duration: '2m 20s', status: 'unverified', severity: 'critical', description: 'Restaurant area on fire. Smell of gas. People running out.', locationType: 'gps', accuracy: '±4m' },
+      { id: 'CALL-001', name: 'Arnab Chatterjee', phone: '+91-9831012345', location: { lat: 22.5728, lng: 88.3642 }, address: '14 Park Street, Kolkata', callTime: '14:30:45', duration: '2m 20s', status: 'active', severity: 'critical', description: 'Restaurant area on fire. Smell of gas. People running out.', locationType: 'gps', accuracy: '±4m' },
     ],
   },
   pune: {
@@ -428,7 +428,7 @@ const cityData: Record<CityKey, {
       { id: 'LOG-001', incidentId: 'INC-001', timestamp: '2026-03-22 14:28:04', event: 'Fire reported at FC Road', severity: 'high', location: '33 FC Road', status: 'detected', details: 'Coaching institute. 60 students present.' },
     ],
     callers: [
-      { id: 'CALL-001', name: 'Sneha Kulkarni', phone: '+91-9823012345', location: { lat: 18.5208, lng: 73.8570 }, address: '33 FC Road, Deccan Gymkhana, Pune', callTime: '14:27:30', duration: '2m 50s', status: 'unverified', severity: 'high', description: 'Institute building on fire. Students evacuating through back exit.', locationType: 'gps', accuracy: '±6m' },
+      { id: 'CALL-001', name: 'Sneha Kulkarni', phone: '+91-9823012345', location: { lat: 18.5208, lng: 73.8570 }, address: '33 FC Road, Deccan Gymkhana, Pune', callTime: '14:27:30', duration: '2m 50s', status: 'active', severity: 'high', description: 'Institute building on fire. Students evacuating through back exit.', locationType: 'gps', accuracy: '±6m' },
     ],
   },
   ahmedabad: {
@@ -454,7 +454,7 @@ const cityData: Record<CityKey, {
       { id: 'LOG-001', incidentId: 'INC-001', timestamp: '2026-03-22 14:30:04', event: 'Fire detected at textile factory', severity: 'critical', location: '18 CG Road', status: 'detected', details: 'Cotton factory. Rapid spread risk. AI confidence: 97%.' },
     ],
     callers: [
-      { id: 'CALL-001', name: 'Hardik Shah', phone: '+91-9825012345', location: { lat: 23.0228, lng: 72.5718 }, address: '18 CG Road, Navrangpura, Ahmedabad', callTime: '14:29:40', duration: '2m 15s', status: 'unverified', severity: 'critical', description: 'Factory on fire. Cotton bales burning. Workers evacuating.', locationType: 'gps', accuracy: '±5m' },
+      { id: 'CALL-001', name: 'Hardik Shah', phone: '+91-9825012345', location: { lat: 23.0228, lng: 72.5718 }, address: '18 CG Road, Navrangpura, Ahmedabad', callTime: '14:29:40', duration: '2m 15s', status: 'active', severity: 'critical', description: 'Factory on fire. Cotton bales burning. Workers evacuating.', locationType: 'gps', accuracy: '±5m' },
     ],
   },
 };

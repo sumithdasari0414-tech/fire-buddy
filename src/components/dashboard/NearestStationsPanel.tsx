@@ -1,10 +1,36 @@
 import { useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { getStations, calculateDistance, getEstimatedResponseTime } from '@/data/mockData';
+import { getStations, calculateDistance } from '@/data/mockData';
+import { useRoute, formatDuration } from '@/hooks/useRoute';
 import { useIncidents } from '@/hooks/useIncidents';
 import { StatusBadge } from './StatusBadge';
 import { IncidentsLoading, IncidentsError, IncidentsEmpty } from './IncidentsDataState';
 import { Building, Phone, Truck, Clock, MapPin, ExternalLink } from 'lucide-react';
+
+/** Real route ETA from verified station coordinates to the incident. */
+function StationEta({
+  origin,
+  destination,
+}: {
+  origin: { lat: number; lng: number };
+  destination: { lat: number; lng: number };
+}) {
+  const { route, loading, error } = useRoute(origin, destination);
+  return (
+    <div className="flex items-center gap-1.5 text-[11px] font-mono text-success">
+      <Clock className="w-3 h-3" />
+      <span>
+        {loading
+          ? 'Computing ETA…'
+          : error
+            ? 'ETA unavailable'
+            : route
+              ? `ETA: ${formatDuration(route.durationSeconds)}`
+              : 'ETA unavailable'}
+      </span>
+    </div>
+  );
+}
 
 export function NearestStationsPanel({ incidentId }: { incidentId?: string }) {
   const { incidents, loading, error, reload } = useIncidents();
@@ -18,7 +44,7 @@ export function NearestStationsPanel({ incidentId }: { incidentId?: string }) {
         incident.location.lat, incident.location.lng,
         station.location.lat, station.location.lng
       );
-      return { ...station, distance: dist, responseTime: getEstimatedResponseTime(dist) };
+      return { ...station, distance: dist };
     }).sort((a, b) => a.distance - b.distance);
   }, [incident, stations]);
 
@@ -70,10 +96,17 @@ export function NearestStationsPanel({ incidentId }: { incidentId?: string }) {
                 <MapPin className="w-3 h-3" />
                 <span>{station.distance.toFixed(1)} km away</span>
               </div>
-              <div className="flex items-center gap-1.5 text-[11px] text-success font-mono">
-                <Clock className="w-3 h-3" />
-                <span>ETA: {station.responseTime}</span>
-              </div>
+              {i === 0 ? (
+                <StationEta
+                  origin={station.location}
+                  destination={incident.location}
+                />
+              ) : (
+                <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground font-mono">
+                  <Clock className="w-3 h-3" />
+                  <span>ETA on acknowledgement</span>
+                </div>
+              )}
               <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
                 <Truck className="w-3 h-3" />
                 <span>{station.engines} engines, {station.ambulances} ambulances</span>
