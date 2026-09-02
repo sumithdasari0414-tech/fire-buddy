@@ -475,15 +475,11 @@ export function getCityConfig(): CityConfig {
 }
 
 // ===== DYNAMIC ACCESSORS =====
-export function getIncidents(): Incident[] { return cityData[currentCity].incidents; }
-export function getStations(): FireStation[] { return cityData[currentCity].stations; }
+// Incidents and fire stations now come from Firestore (NASA FIRMS detections and
+// verified station records) — no mock accessors remain for them.
 export function getNotifications(): Notification[] { return cityData[currentCity].notifications; }
 export function getLogs(): IncidentLog[] { return cityData[currentCity].logs; }
 export function getCallers(): EmergencyCaller[] { return cityData[currentCity].callers; }
-
-// Legacy exports (default to current city)
-export const mockIncidents = cityData.hyderabad.incidents;
-export const fireStations = cityData.hyderabad.stations;
 export const mockNotifications = cityData.hyderabad.notifications;
 export const incidentLogs = cityData.hyderabad.logs;
 
