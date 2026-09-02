@@ -478,7 +478,7 @@ export function getCityConfig(): CityConfig {
 // Incidents and fire stations now come from Firestore (NASA FIRMS detections and
 // verified station records) — no mock accessors remain for them.
 export function getNotifications(): Notification[] { return cityData[currentCity].notifications; }
-export function getLogs(): IncidentLog[] { return cityData[currentCity].logs; }
+// Incident history is derived from the Firestore incident feed — no mock logs.
 export function getCallers(): EmergencyCaller[] { return cityData[currentCity].callers; }
 export const mockNotifications = cityData.hyderabad.notifications;
 export const incidentLogs = cityData.hyderabad.logs;
