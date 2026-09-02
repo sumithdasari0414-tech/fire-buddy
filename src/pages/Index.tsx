@@ -17,6 +17,7 @@ import { CitySelector } from '@/components/dashboard/CitySelector';
 import { SosAlertsPanel } from '@/components/dashboard/SosAlertsPanel';
 import { LanguageSelector } from '@/components/LanguageSelector';
 import { ConnectionStatusBanner } from '@/components/dashboard/ConnectionStatusBanner';
+import { FirmsStatusBar } from '@/components/dashboard/FirmsStatusBar';
 import { setCurrentCity, getCurrentCity, CityKey } from '@/data/mockData';
 
 const Index = () => {
@@ -91,6 +92,7 @@ const Index = () => {
       />
       <main className="flex-1 overflow-hidden flex flex-col">
         <ConnectionStatusBanner />
+        <FirmsStatusBar />
         <div className="flex-1 overflow-hidden">
           {renderContent()}
         </div>
