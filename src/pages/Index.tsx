@@ -92,6 +92,7 @@ const Index = () => {
       />
       <main className="flex-1 overflow-hidden flex flex-col">
         <ConnectionStatusBanner />
+        <FirmsStatusBar />
         <div className="flex-1 overflow-hidden">
           {renderContent()}
         </div>
