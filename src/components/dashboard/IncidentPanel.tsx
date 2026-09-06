@@ -129,6 +129,8 @@ function IncidentDetail({ incident, onBack }: { incident: Incident; onBack: () =
         </div>
       </div>
 
+      <LifecycleControls incidentId={incident.id} status={incident.status} />
+
       <IncidentSources incidentId={incident.id} />
     </motion.div>
   );
