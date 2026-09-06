@@ -11,24 +11,24 @@ export function IncidentPanel({ selectedId, onSelect }: {
   selectedId?: string;
   onSelect: (id: string) => void;
 }) {
-  const { incidents: mockIncidents, loading, error, reload } = useIncidents();
-  const selected = mockIncidents.find(i => i.id === selectedId);
+  const { incidents, loading, error, reload } = useIncidents();
+  const selected = incidents.find(i => i.id === selectedId);
 
   if (loading) return <IncidentsLoading />;
   if (error) return <IncidentsError error={error} onRetry={reload} />;
-  if (mockIncidents.length === 0) return <IncidentsEmpty />;
+  if (incidents.length === 0) return <IncidentsEmpty />;
 
   return (
     <div className="flex flex-col h-full">
       <div className="flex items-center justify-between p-4 border-b border-border">
         <h2 className="text-sm font-bold tracking-tight">ACTIVE INCIDENTS</h2>
-        <StatusBadge variant="critical" pulse>{mockIncidents.filter(i => i.status !== 'resolved').length} ACTIVE</StatusBadge>
+        <StatusBadge variant="critical" pulse>{incidents.filter(i => i.status !== 'resolved').length} ACTIVE</StatusBadge>
       </div>
 
       <div className="flex-1 overflow-y-auto">
         {!selected ? (
           <div className="divide-y divide-border">
-            {mockIncidents.map((inc, i) => (
+            {incidents.map((inc, i) => (
               <motion.button
                 key={inc.id}
                 initial={{ opacity: 0, x: -20 }}
