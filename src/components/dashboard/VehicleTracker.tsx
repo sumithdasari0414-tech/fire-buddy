@@ -6,6 +6,7 @@ import type { LiveVehicle } from '@/integrations/firebase/vehicles';
 import { StatusBadge } from './StatusBadge';
 import { IncidentsLoading, IncidentsError, IncidentsEmpty } from './IncidentsDataState';
 import { Navigation, Gauge, Radio, Clock } from 'lucide-react';
+import { DeviceGpsShare } from './DeviceGpsShare';
 
 const statusVariant: Record<string, 'success' | 'warning' | 'critical' | 'info'> = {
   unverified: 'info',
