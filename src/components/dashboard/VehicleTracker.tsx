@@ -125,6 +125,7 @@ export function VehicleTracker() {
             )}
 
             <VehicleRoute vehicle={v} />
+            <DeviceGpsShare vehicleId={v.id} callsign={v.callsign} />
           </motion.div>
         ))}
       </div>
