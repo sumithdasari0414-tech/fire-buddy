@@ -5,6 +5,7 @@ import { useIncidents } from '@/hooks/useIncidents';
 import { fetchSourcesForIncident, type IncidentSource } from '@/integrations/firebase/sources';
 import { StatusBadge } from './StatusBadge';
 import { IncidentsLoading, IncidentsError, IncidentsEmpty } from './IncidentsDataState';
+import { LifecycleControls } from './LifecycleControls';
 import { MapPin, Clock, Building, Maximize2, AlertTriangle, Link2, ExternalLink, Loader2 } from 'lucide-react';
 
 export function IncidentPanel({ selectedId, onSelect }: {
@@ -128,6 +129,8 @@ function IncidentDetail({ incident, onBack }: { incident: Incident; onBack: () =
           />
         </div>
       </div>
+
+      <LifecycleControls incidentId={incident.id} status={incident.status} />
 
       <IncidentSources incidentId={incident.id} />
     </motion.div>
