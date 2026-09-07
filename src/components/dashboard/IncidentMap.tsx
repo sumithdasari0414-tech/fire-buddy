@@ -7,6 +7,8 @@ import { useVehicles } from '@/hooks/useVehicles';
 import type { LiveVehicle } from '@/integrations/firebase/vehicles';
 import { StatusBadge } from './StatusBadge';
 import { Loader2, AlertTriangle } from 'lucide-react';
+import { isGoogleMapsConfigured } from '@/lib/googleMaps';
+import { LiveGoogleMap } from './LiveGoogleMap';
 
 function getMapBounds(incidents: Incident[], vehicles: { lat: number; lng: number }[]) {
   const allLats = [...incidents.map(i => i.location.lat), ...vehicles.map(v => v.lat)];
