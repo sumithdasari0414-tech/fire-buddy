@@ -7,6 +7,8 @@ import { useVehicles } from '@/hooks/useVehicles';
 import type { LiveVehicle } from '@/integrations/firebase/vehicles';
 import { StatusBadge } from './StatusBadge';
 import { Loader2, AlertTriangle } from 'lucide-react';
+import { isGoogleMapsConfigured } from '@/lib/googleMaps';
+import { LiveGoogleMap } from './LiveGoogleMap';
 
 function getMapBounds(incidents: Incident[], vehicles: { lat: number; lng: number }[]) {
   const allLats = [...incidents.map(i => i.location.lat), ...vehicles.map(v => v.lat)];
@@ -34,7 +36,13 @@ const vehicleIcons: Record<string, string> = {
   police: '🚓',
 };
 
+/** Real Google Maps view when a browser map key is configured, tactical grid otherwise. */
 export function IncidentMap({ onSelectIncident }: { onSelectIncident?: (id: string) => void }) {
+  if (isGoogleMapsConfigured) return <LiveGoogleMap onSelectIncident={onSelectIncident} />;
+  return <TacticalMap onSelectIncident={onSelectIncident} />;
+}
+
+function TacticalMap({ onSelectIncident }: { onSelectIncident?: (id: string) => void }) {
   const { incidents, loading, error } = useIncidents();
   const { vehicles: allVehicles } = useVehicles();
   // Only vehicles with a real reported GPS fix are plotted.
