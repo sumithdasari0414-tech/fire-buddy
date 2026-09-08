@@ -9,6 +9,7 @@ import { EmergencyChat } from '@/components/dashboard/EmergencyChat';
 import { SafetyGuide } from '@/components/dashboard/SafetyGuide';
 import { FireDetectionPanel } from '@/components/dashboard/FireDetectionPanel';
 import { NearestStationsPanel } from '@/components/dashboard/NearestStationsPanel';
+import { EmergencyResponsePanel } from '@/components/dashboard/EmergencyResponsePanel';
 import { IncidentHistoryPanel } from '@/components/dashboard/IncidentHistoryPanel';
 import { LocationPanel } from '@/components/dashboard/LocationPanel';
 import { CallerTrackingPanel } from '@/components/dashboard/CallerTrackingPanel';
@@ -59,6 +60,8 @@ const Index = () => {
         );
       case 'stations':
         return <NearestStationsPanel key={refreshKey} incidentId={selectedIncident} />;
+      case 'proximity':
+        return <EmergencyResponsePanel key={refreshKey} incidentId={selectedIncident} />;
       case 'vehicles':
         return <VehicleTracker key={refreshKey} />;
       case 'callers':

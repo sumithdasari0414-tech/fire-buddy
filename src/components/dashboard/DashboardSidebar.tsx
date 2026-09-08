@@ -1,6 +1,6 @@
 import { useState, ReactNode } from 'react';
 import { cn } from '@/lib/utils';
-import { Flame, LayoutDashboard, MapPin, Truck, Bell, MessageSquare, ShieldAlert, Activity, ChevronLeft, ChevronRight, Camera, Building, FileText, Navigation, Phone, PhoneCall, Siren, ArrowLeft } from 'lucide-react';
+import { Flame, LayoutDashboard, MapPin, Truck, Bell, MessageSquare, ShieldAlert, Activity, ChevronLeft, ChevronRight, Camera, Building, FileText, Navigation, Phone, PhoneCall, Siren, ArrowLeft, LifeBuoy } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 type NavItem = { id: string; label: string; icon: React.ElementType; badge?: number };
@@ -13,6 +13,7 @@ const navItems: NavItem[] = [
   { id: 'location', label: 'Location Intel', icon: Navigation },
   { id: 'map', label: 'Live Map', icon: MapPin },
   { id: 'stations', label: 'Fire Stations', icon: Building },
+  { id: 'proximity', label: 'Nearby Services', icon: LifeBuoy },
   { id: 'vehicles', label: 'Fleet Tracker', icon: Truck },
   { id: 'callers', label: 'Caller Tracking', icon: Phone },
   { id: 'tollfree', label: 'Toll-Free Line', icon: PhoneCall },
