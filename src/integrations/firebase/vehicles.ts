@@ -15,17 +15,19 @@ import { db, isFirebaseConfigured } from './client';
 
 export type VehicleType = 'fire_engine' | 'ambulance' | 'police' | 'other';
 
-/** Shared responder lifecycle. */
+/** Shared responder lifecycle. `dispatch_ready` awaits dispatcher approval. */
 export const LIFECYCLE = [
   'unverified',
   'acknowledged',
   'verified',
+  'dispatch_ready',
   'dispatched',
   'en_route',
   'arrived',
   'resolved',
 ] as const;
 export type LifecycleStatus = (typeof LIFECYCLE)[number];
+
 
 export function asLifecycle(raw: unknown, fallback: LifecycleStatus = 'unverified'): LifecycleStatus {
   const v = typeof raw === 'string' ? raw.trim().toLowerCase().replace(/[\s-]+/g, '_') : '';
