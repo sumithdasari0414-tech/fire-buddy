@@ -14,7 +14,7 @@ const navItems: NavItem[] = [
   { id: 'location', label: 'Location Intel', icon: Navigation },
   { id: 'map', label: 'Live Map', icon: MapPin },
   { id: 'stations', label: 'Fire Stations', icon: Building },
-  { id: 'proximity', label: 'Nearby Services', icon: LifeBuoy, Users },
+  { id: 'proximity', label: 'Nearby Services', icon: LifeBuoy },
   { id: 'vehicles', label: 'Fleet Tracker', icon: Truck },
   { id: 'callers', label: 'Caller Tracking', icon: Phone },
   { id: 'tollfree', label: 'Toll-Free Line', icon: PhoneCall },
