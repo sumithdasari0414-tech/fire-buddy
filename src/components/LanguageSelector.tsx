@@ -4,7 +4,7 @@ import { LANGUAGES, Lang } from '@/i18n/translations';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export function LanguageSelector({ compact = false }: { compact?: boolean }) {
-  const { lang, setLang, t } = useI18n();
+  const { lang, setLang, t, translating, fallback } = useI18n();
   return (
     <div className="flex items-center gap-2">
       {!compact && <Globe className="w-4 h-4 text-muted-foreground" />}
@@ -20,6 +20,8 @@ export function LanguageSelector({ compact = false }: { compact?: boolean }) {
           ))}
         </SelectContent>
       </Select>
+      {translating && <span className="text-[10px] text-muted-foreground">…</span>}
+      {fallback && <span className="text-[10px] text-warning" title={t('lang.fallback')}>EN</span>}
     </div>
   );
 }
