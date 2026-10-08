@@ -16,6 +16,7 @@ import { CallerTrackingPanel } from '@/components/dashboard/CallerTrackingPanel'
 import { TollFreeCenter } from '@/components/dashboard/TollFreeCenter';
 import { CitySelector } from '@/components/dashboard/CitySelector';
 import { SosAlertsPanel } from '@/components/dashboard/SosAlertsPanel';
+import { EmergencyContactsPanel } from '@/components/dashboard/EmergencyContactsPanel';
 import { LanguageSelector } from '@/components/LanguageSelector';
 import { ConnectionStatusBanner } from '@/components/dashboard/ConnectionStatusBanner';
 import { FirmsStatusBar } from '@/components/dashboard/FirmsStatusBar';
@@ -74,6 +75,8 @@ const Index = () => {
         return <NotificationCenter key={refreshKey} />;
       case 'chat':
         return <EmergencyChat />;
+      case 'contacts':
+        return <EmergencyContactsPanel />;
       case 'safety':
         return <SafetyGuide />;
       default:
@@ -94,6 +97,7 @@ const Index = () => {
         }
       />
       <main className="flex-1 overflow-hidden flex flex-col">
+        <div className="flex justify-end px-4 py-1.5 border-b border-border"><LanguageSelector /></div>
         <ConnectionStatusBanner />
         <FirmsStatusBar />
         <div className="flex-1 overflow-hidden">

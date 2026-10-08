@@ -1,7 +1,8 @@
 import { useState, ReactNode } from 'react';
 import { cn } from '@/lib/utils';
-import { Flame, LayoutDashboard, MapPin, Truck, Bell, MessageSquare, ShieldAlert, Activity, ChevronLeft, ChevronRight, Camera, Building, FileText, Navigation, Phone, PhoneCall, Siren, ArrowLeft, LifeBuoy } from 'lucide-react';
+import { Flame, LayoutDashboard, MapPin, Truck, Bell, MessageSquare, ShieldAlert, Activity, ChevronLeft, ChevronRight, Camera, Building, FileText, Navigation, Phone, PhoneCall, Siren, ArrowLeft, LifeBuoy, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useI18n } from '@/i18n/I18nProvider';
 
 type NavItem = { id: string; label: string; icon: React.ElementType; badge?: number };
 
@@ -13,7 +14,7 @@ const navItems: NavItem[] = [
   { id: 'location', label: 'Location Intel', icon: Navigation },
   { id: 'map', label: 'Live Map', icon: MapPin },
   { id: 'stations', label: 'Fire Stations', icon: Building },
-  { id: 'proximity', label: 'Nearby Services', icon: LifeBuoy },
+  { id: 'proximity', label: 'Nearby Services', icon: LifeBuoy, Users },
   { id: 'vehicles', label: 'Fleet Tracker', icon: Truck },
   { id: 'callers', label: 'Caller Tracking', icon: Phone },
   { id: 'tollfree', label: 'Toll-Free Line', icon: PhoneCall },
@@ -21,6 +22,7 @@ const navItems: NavItem[] = [
   { id: 'notifications', label: 'Alerts', icon: Bell, badge: 3 },
   { id: 'chat', label: 'AI Assistant', icon: MessageSquare },
   { id: 'safety', label: 'Safety Guide', icon: Activity },
+  { id: 'contacts', label: 'Emergency Contacts', icon: Users },
 ];
 
 export function DashboardSidebar({ activeTab, onTabChange, citySelector }: {
@@ -29,6 +31,7 @@ export function DashboardSidebar({ activeTab, onTabChange, citySelector }: {
   citySelector?: ReactNode;
 }) {
   const [collapsed, setCollapsed] = useState(false);
+  const { t } = useI18n();
 
   return (
     <aside className={cn(
@@ -75,7 +78,7 @@ export function DashboardSidebar({ activeTab, onTabChange, citySelector }: {
             )}
           >
             <item.icon className={cn('w-4 h-4 flex-shrink-0', activeTab === item.id && 'text-primary')} />
-            {!collapsed && <span className="truncate">{item.label}</span>}
+            {!collapsed && <span className="truncate">{t(`nav.${item.id}`)}</span>}
             {item.badge && !collapsed && (
               <span className="ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">{item.badge}</span>
             )}
