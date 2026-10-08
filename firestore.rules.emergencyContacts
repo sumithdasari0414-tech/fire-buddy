@@ -1,0 +1,13 @@
+// Merge this block into your Firestore rules (Firebase console > Firestore > Rules).
+match /emergencyContacts/{id} {
+  allow read, delete: if request.auth != null && resource.data.ownerUid == request.auth.uid;
+  allow create: if request.auth != null
+    && request.resource.data.ownerUid == request.auth.uid
+    && request.resource.data.keys().hasOnly(['ownerUid','name','phone','relation','source','createdAt','updatedAt'])
+    && request.resource.data.name is string && request.resource.data.name.size() <= 80
+    && request.resource.data.phone is string && request.resource.data.phone.matches('^\\+?[0-9]{6,15}$');
+  allow update: if request.auth != null
+    && resource.data.ownerUid == request.auth.uid
+    && request.resource.data.ownerUid == resource.data.ownerUid
+    && request.resource.data.phone.matches('^\\+?[0-9]{6,15}$');
+}

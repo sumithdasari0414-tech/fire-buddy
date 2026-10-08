@@ -1,4 +1,4 @@
-export type Lang = 'en' | 'hi' | 'te' | 'ta' | 'bn';
+export type Lang = 'en' | 'hi' | 'te' | 'ta' | 'bn' | 'kn' | 'mr' | 'ml' | 'gu' | 'ur';
 
 export const LANGUAGES: { code: Lang; label: string; native: string }[] = [
   { code: 'en', label: 'English', native: 'English' },
@@ -6,11 +6,16 @@ export const LANGUAGES: { code: Lang; label: string; native: string }[] = [
   { code: 'te', label: 'Telugu', native: 'తెలుగు' },
   { code: 'ta', label: 'Tamil', native: 'தமிழ்' },
   { code: 'bn', label: 'Bengali', native: 'বাংলা' },
+  { code: 'kn', label: 'Kannada', native: 'ಕನ್ನಡ' },
+  { code: 'mr', label: 'Marathi', native: 'मराठी' },
+  { code: 'ml', label: 'Malayalam', native: 'മലയാളം' },
+  { code: 'gu', label: 'Gujarati', native: 'ગુજરાતી' },
+  { code: 'ur', label: 'Urdu', native: 'اردو' },
 ];
 
 type Dict = Record<string, string>;
 
-export const translations: Record<Lang, Dict> = {
+export const translations: Partial<Record<Lang, Dict>> & { en: Dict } = {
   en: {
     'app.title': 'FireWatch Emergency System',
     'app.tagline': 'AI-powered fire detection & response',
@@ -53,6 +58,29 @@ export const translations: Record<Lang, Dict> = {
     'common.back': 'Back',
     'common.location': 'Location',
     'common.status': 'Status',
+    'contacts.title': 'Emergency Contacts',
+    'contacts.subtitle': 'Only contacts you explicitly choose are saved. Your contact book is never uploaded.',
+    'contacts.import': 'Import from device',
+    'contacts.unsupported': 'Contact picker is not available in this browser. Add contacts manually below.',
+    'contacts.consent': 'I allow FireBuddy to open my contact picker so I can choose specific contacts.',
+    'contacts.pick': 'Choose contacts',
+    'contacts.denied': 'Contact access was denied or cancelled.',
+    'contacts.none.selected': 'No contacts were selected.',
+    'contacts.saved': '{n} contact(s) saved',
+    'contacts.manual': 'Add manually',
+    'contacts.name': 'Name',
+    'contacts.phone': 'Phone',
+    'contacts.relation': 'Relation (optional)',
+    'contacts.add': 'Add contact',
+    'contacts.saved.list': 'Saved emergency contacts',
+    'contacts.empty': 'No emergency contacts saved yet.',
+    'lang.fallback': 'Translation unavailable — showing English.',
+    'nav.overview': 'Command Center', 'nav.sos': 'SOS Alerts', 'nav.detection': 'Fire Detection',
+    'nav.incidents': 'Incidents', 'nav.location': 'Location Intel', 'nav.map': 'Live Map',
+    'nav.stations': 'Fire Stations', 'nav.proximity': 'Nearby Services', 'nav.vehicles': 'Fleet Tracker',
+    'nav.callers': 'Caller Tracking', 'nav.tollfree': 'Toll-Free Line', 'nav.history': 'Incident Logs',
+    'nav.notifications': 'Alerts', 'nav.chat': 'AI Assistant', 'nav.safety': 'Safety Guide',
+    'nav.contacts': 'Emergency Contacts',
   },
   hi: {
     'app.title': 'फायरवॉच आपातकालीन प्रणाली',
