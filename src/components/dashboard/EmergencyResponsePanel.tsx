@@ -1,10 +1,11 @@
 // Emergency Services Proximity — real nearby facilities (Google Places) and real
 // responder vehicles (Firestore GPS), ranked by real traffic-aware ETA from the
 // secure routing backend. No fabricated facilities, vehicles, distances or ETAs.
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useIncidents } from '@/hooks/useIncidents';
 import { useVehicles } from '@/hooks/useVehicles';
+import { saveEmergencyServices } from '@/integrations/firebase/emergencyServices';
 import { useNearbyServices, type NearbyService, type ServiceCategory } from '@/hooks/useNearbyServices';
 import { useRouteMatrix, type MatrixEntry } from '@/hooks/useRouteMatrix';
 import { formatDistance, formatDuration } from '@/hooks/useRoute';
@@ -49,6 +50,15 @@ export function EmergencyResponsePanel({ incidentId }: { incidentId?: string }) 
     error: servicesError,
     reload: reloadServices,
   } = useNearbyServices(target);
+
+  // Cache the real Places results in Firestore so dispatch records can reference them.
+  useEffect(() => {
+    if (!services.length) return;
+    void saveEmergencyServices(
+      services.map((s) => ({ id: s.id, name: s.name, category: s.category, address: s.address, phone: s.phone, mapsUri: s.mapsUri, location: s.location })),
+      incident?.id ?? null,
+    );
+  }, [services, incident?.id]);
   const { vehicles, loading: vehiclesLoading, error: vehiclesError } = useVehicles();
 
   // Vehicles that have reported a real GPS fix and are not already closed out.
