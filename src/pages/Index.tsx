@@ -17,6 +17,7 @@ import { TollFreeCenter } from '@/components/dashboard/TollFreeCenter';
 import { CitySelector } from '@/components/dashboard/CitySelector';
 import { SosAlertsPanel } from '@/components/dashboard/SosAlertsPanel';
 import { EmergencyContactsPanel } from '@/components/dashboard/EmergencyContactsPanel';
+import { DispatcherConsole } from '@/components/dashboard/DispatcherConsole';
 import { LanguageSelector } from '@/components/LanguageSelector';
 import { ConnectionStatusBanner } from '@/components/dashboard/ConnectionStatusBanner';
 import { FirmsStatusBar } from '@/components/dashboard/FirmsStatusBar';
@@ -75,6 +76,8 @@ const Index = () => {
         return <NotificationCenter key={refreshKey} />;
       case 'chat':
         return <EmergencyChat />;
+      case 'dispatch':
+        return <DispatcherConsole />;
       case 'contacts':
         return <EmergencyContactsPanel />;
       case 'safety':

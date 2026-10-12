@@ -1,6 +1,6 @@
 import { useState, ReactNode } from 'react';
 import { cn } from '@/lib/utils';
-import { Flame, LayoutDashboard, MapPin, Truck, Bell, MessageSquare, ShieldAlert, Activity, ChevronLeft, ChevronRight, Camera, Building, FileText, Navigation, Phone, PhoneCall, Siren, ArrowLeft, LifeBuoy, Users } from 'lucide-react';
+import { Flame, LayoutDashboard, MapPin, Truck, Bell, MessageSquare, ShieldAlert, Activity, ChevronLeft, ChevronRight, Camera, Building, FileText, Navigation, Phone, PhoneCall, Siren, ArrowLeft, LifeBuoy, Users, ClipboardCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useI18n } from '@/i18n/I18nProvider';
 
@@ -15,6 +15,7 @@ const navItems: NavItem[] = [
   { id: 'map', label: 'Live Map', icon: MapPin },
   { id: 'stations', label: 'Fire Stations', icon: Building },
   { id: 'proximity', label: 'Nearby Services', icon: LifeBuoy },
+  { id: 'dispatch', label: 'Dispatcher Console', icon: ClipboardCheck },
   { id: 'vehicles', label: 'Fleet Tracker', icon: Truck },
   { id: 'callers', label: 'Caller Tracking', icon: Phone },
   { id: 'tollfree', label: 'Toll-Free Line', icon: PhoneCall },

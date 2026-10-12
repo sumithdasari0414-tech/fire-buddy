@@ -81,6 +81,7 @@ export const translations: Partial<Record<Lang, Dict>> & { en: Dict } = {
     'nav.callers': 'Caller Tracking', 'nav.tollfree': 'Toll-Free Line', 'nav.history': 'Incident Logs',
     'nav.notifications': 'Alerts', 'nav.chat': 'AI Assistant', 'nav.safety': 'Safety Guide',
     'nav.contacts': 'Emergency Contacts',
+    'nav.dispatch': 'Dispatcher Console',
   },
   hi: {
     'app.title': 'फायरवॉच आपातकालीन प्रणाली',
