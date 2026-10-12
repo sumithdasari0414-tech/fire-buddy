@@ -7,7 +7,7 @@ Deno.serve(async (req) => {
     new Response(JSON.stringify(b), { status: s, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
   try {
     const key = Deno.env.get('GOOGLE_TRANSLATE_API_KEY');
-    if (!key) return json({ error: 'Translation provider not configured' }, 503);
+    if (!key) return json({ unavailable: true, reason: 'Translation provider not configured' });
     const { texts, target } = await req.json();
     if (!Array.isArray(texts) || texts.length === 0 || texts.length > 128 ||
         !texts.every((t) => typeof t === 'string' && t.length < 500) ||

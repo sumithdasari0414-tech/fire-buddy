@@ -47,7 +47,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
           const { data, error } = await supabase.functions.invoke('translate-ui', {
             body: { texts: keys.map(k => protect(translations.en[k])), target: lang },
           });
-          if (error || !data?.translations) throw error ?? new Error('no data');
+          if (error || !data?.translations) { setFallback(true); return; }
           keys.forEach((k, j) => { out[k] = unprotect(data.translations[j]); });
         }
         localStorage.setItem(cacheKey(lang), JSON.stringify(out));
