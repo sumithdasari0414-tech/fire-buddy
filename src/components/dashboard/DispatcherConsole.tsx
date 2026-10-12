@@ -13,6 +13,7 @@ import { useAuditLogs } from '@/hooks/useAuditLogs';
 import {
   approveDispatch, completeDispatch, rejectDispatch, requestDispatch, type DispatchRecord,
 } from '@/integrations/firebase/dispatches';
+import { ensureUser } from '@/integrations/firebase/contacts';
 import { getDispatchServiceProvider, isDispatchServiceConnected } from '@/services/dispatchService';
 
 const sel = 'h-9 w-full rounded-md border border-input bg-background px-2 text-xs';
@@ -39,7 +40,7 @@ export function DispatcherConsole() {
   const run = async (key: string, fn: () => Promise<unknown>, ok: string) => {
     if (!who) return toast.error('Enter your dispatcher ID first.');
     setBusy(key);
-    try { await fn(); toast.success(ok); } catch (e) { toast.error((e as Error).message); } finally { setBusy(null); }
+    try { await ensureUser(); await fn(); toast.success(ok); } catch (e) { toast.error((e as Error).message); } finally { setBusy(null); }
   };
 
   const onRequest = () => {
