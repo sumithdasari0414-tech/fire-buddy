@@ -10,7 +10,7 @@ const GATEWAY_URL = 'https://connector-gateway.lovable.dev/google_maps';
 
 const CATEGORIES: Record<string, string[]> = {
   fire_station: ['fire_station'],
-  hospital: ['hospital', 'emergency_room'],
+  hospital: ['hospital'],
   police: ['police'],
   other: ['pharmacy', 'doctor'],
 };
