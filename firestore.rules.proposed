@@ -1,0 +1,159 @@
+rules_version = '2';
+// FireBuddy — PROPOSED least-privilege rules. Review before publishing. NOT auto-published.
+//
+// Roles come from Firebase Auth custom claims (token.role), set only by a trusted
+// backend / admin script — never by the client. Anonymous users get NO operational role.
+//   role: 'viewer' | 'responder' | 'dispatcher' | 'admin'
+//   responders also carry token.vehicleId (the one vehicle they may report GPS for)
+// Server-side writers (FIRMS ingestion, audit writer) use the Admin SDK in a trusted
+// backend, which bypasses these rules by design.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---------- helpers ----------
+    function signedIn()   { return request.auth != null; }
+    function isAnon()     { return signedIn() && request.auth.token.firebase.sign_in_provider == 'anonymous'; }
+    function staff()      { return signedIn() && !isAnon() && request.auth.token.email_verified == true; }
+    function role()       { return staff() ? request.auth.token.role : null; }
+    function isViewer()   { return role() in ['viewer', 'responder', 'dispatcher', 'admin']; }
+    function isResponder(){ return role() in ['responder', 'dispatcher', 'admin']; }
+    function isDispatcher(){ return role() in ['dispatcher', 'admin']; }
+    function isAdmin()    { return role() == 'admin'; }
+
+    function changed()        { return request.resource.data.diff(resource.data).affectedKeys(); }
+    function onlyChanges(ks)  { return changed().hasOnly(ks); }
+    function isNum(v)         { return v is int || v is float; }
+    function from()           { return resource.data.status; }
+    function to()             { return request.resource.data.status; }
+
+    // ---------- incidents ----------
+    // Created only by the trusted FIRMS ingestion backend (Admin SDK).
+    // Responders may move: unverified→acknowledged, dispatched→en_route→arrived.
+    // Dispatchers additionally: acknowledged→verified, verified→dispatch_ready,
+    // dispatch_ready→verified (rejection), dispatch_ready→dispatched (approval), arrived→resolved.
+    match /incidents/{id} {
+      allow read: if isViewer();
+      allow create, delete: if false;
+      allow update: if onlyChanges(['status', 'status updated at', 'acknowledged at', 'resolved at',
+                                    'acknowledged by station', 'acknowledged by station name'])
+        && request.resource.data['status updated at'] == request.time
+        && (
+          (isResponder() && (
+               (from() == 'unverified' && to() == 'acknowledged')
+            || (from() == 'dispatched' && to() == 'en_route')
+            || (from() == 'en_route'   && to() == 'arrived')))
+          ||
+          (isDispatcher() && (
+               (from() == 'acknowledged'   && to() == 'verified')
+            || (from() == 'verified'       && to() == 'dispatch_ready')
+            || (from() == 'dispatch_ready' && to() in ['verified', 'dispatched'])
+            || (from() == 'arrived'        && to() == 'resolved')))
+        );
+    }
+
+    // ---------- provenance sources (backend-managed) ----------
+    match /sources/{id} {
+      allow read: if isViewer();
+      allow write: if false;
+    }
+
+    // ---------- stations (verified registry, admin-managed) ----------
+    match /stations/{id} {
+      allow read: if isViewer();
+      allow write: if isAdmin();
+    }
+
+    // ---------- vehicles ----------
+    // Registry managed by admins. A responder may only report GPS for their own vehicle
+    // (token.vehicleId). Vehicle status changes to 'dispatched' only by dispatchers.
+    match /vehicles/{vehicleId} {
+      allow read: if isViewer();
+      allow create, delete: if isAdmin();
+      allow update: if
+        (isResponder() && request.auth.token.vehicleId == vehicleId
+          && onlyChanges(['location', 'speed kmh', 'updated at'])
+          && request.resource.data.location is latlng
+          && request.resource.data['updated at'] == request.time
+          && (!('speed kmh' in request.resource.data) || (isNum(request.resource.data['speed kmh'])
+                && request.resource.data['speed kmh'] >= 0 && request.resource.data['speed kmh'] < 300)))
+        || (isDispatcher() && onlyChanges(['status', 'updated at', 'assigned incident']))
+        || isAdmin();
+    }
+
+    // ---------- station alerts ----------
+    match /alerts/{id} {
+      allow read: if isViewer();
+      allow create: if isDispatcher()
+        && request.resource.data.status == 'notified'
+        && request.resource.data.acknowledged == false
+        && request.resource.data.location is latlng
+        && request.resource.data['created at'] == request.time;
+      allow update: if isResponder() && onlyChanges(['acknowledged', 'status']);
+      allow delete: if false;
+    }
+
+    // ---------- cached Google Places facilities (public business data) ----------
+    match /emergencyServices/{placeId} {
+      allow read: if isViewer();
+      allow create, update: if isResponder()
+        && request.resource.data.keys().hasOnly(['place id', 'name', 'category', 'address', 'phone',
+                                                 'maps uri', 'location', 'seen at', 'incident ids'])
+        && request.resource.data.name is string && request.resource.data.name.size() <= 200
+        && request.resource.data.location is latlng;
+      allow delete: if isAdmin();
+    }
+
+    // ---------- dispatches (approval layer) ----------
+    // Responders may raise a request for themselves; only dispatchers decide.
+    // 'dispatcher id' must equal the caller's uid — no impersonation.
+    match /dispatches/{id} {
+      allow read: if isViewer();
+      allow create: if isResponder()
+        && request.resource.data.status == 'pending_approval'
+        && request.resource.data['requested by'] == request.auth.uid
+        && request.resource.data['dispatcher id'] == null
+        && request.resource.data['external reference'] == null
+        && request.resource.data['requested at'] == request.time;
+      allow update: if isDispatcher()
+        && request.resource.data['dispatcher id'] == request.auth.uid
+        && onlyChanges(['status', 'dispatcher action', 'dispatcher id', 'decided at', 'decision note', 'history'])
+        && (
+             (resource.data.status == 'pending_approval' && request.resource.data.status in ['approved', 'rejected', 'cancelled'])
+          || (resource.data.status == 'approved'         && request.resource.data.status == 'completed')
+        );
+      // 'external reference' is written only by the future authorized integration backend.
+      allow delete: if false;
+    }
+
+    // ---------- audit logs (append-only, staff-only read) ----------
+    match /auditLogs/{id} {
+      allow read: if isDispatcher();
+      allow create: if isViewer()
+        && request.resource.data.actor == request.auth.uid
+        && request.resource.data['created at'] == request.time
+        && request.resource.data.keys().hasOnly(['action', 'actor', 'entity type', 'entity id', 'detail', 'metadata', 'created at']);
+      allow update, delete: if false;
+    }
+
+    // ---------- personal emergency contacts (owner only, incl. anonymous owner) ----------
+    match /emergencyContacts/{id} {
+      function validContact(d) {
+        return d.keys().hasOnly(['ownerUid', 'name', 'phone', 'relation', 'source', 'createdAt', 'updatedAt'])
+          && d.name is string && d.name.size() > 0 && d.name.size() <= 80
+          && d.phone is string && d.phone.matches('^\\+?[0-9]{6,15}$')
+          && (!('relation' in d) || (d.relation is string && d.relation.size() <= 40))
+          && d.source in ['picker', 'manual'];
+      }
+      allow read, delete: if signedIn() && resource.data.ownerUid == request.auth.uid;
+      allow create: if signedIn() && request.resource.data.ownerUid == request.auth.uid
+        && validContact(request.resource.data);
+      allow update: if signedIn() && resource.data.ownerUid == request.auth.uid
+        && request.resource.data.ownerUid == resource.data.ownerUid
+        && request.resource.data.createdAt == resource.data.createdAt
+        && validContact(request.resource.data);
+    }
+
+    // Everything else denied.
+    match /{document=**} { allow read, write: if false; }
+  }
+}
