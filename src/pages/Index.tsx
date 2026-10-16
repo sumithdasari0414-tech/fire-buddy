@@ -18,6 +18,7 @@ import { CitySelector } from '@/components/dashboard/CitySelector';
 import { SosAlertsPanel } from '@/components/dashboard/SosAlertsPanel';
 import { EmergencyContactsPanel } from '@/components/dashboard/EmergencyContactsPanel';
 import { DispatcherConsole } from '@/components/dashboard/DispatcherConsole';
+import { StaffAccessPanel } from '@/components/dashboard/StaffAccessPanel';
 import { LanguageSelector } from '@/components/LanguageSelector';
 import { ConnectionStatusBanner } from '@/components/dashboard/ConnectionStatusBanner';
 import { FirmsStatusBar } from '@/components/dashboard/FirmsStatusBar';
@@ -78,6 +79,8 @@ const Index = () => {
         return <EmergencyChat />;
       case 'dispatch':
         return <DispatcherConsole />;
+      case 'staff':
+        return <StaffAccessPanel />;
       case 'contacts':
         return <EmergencyContactsPanel />;
       case 'safety':
