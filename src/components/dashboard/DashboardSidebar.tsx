@@ -1,6 +1,6 @@
 import { useState, ReactNode } from 'react';
 import { cn } from '@/lib/utils';
-import { Flame, LayoutDashboard, MapPin, Truck, Bell, MessageSquare, ShieldAlert, Activity, ChevronLeft, ChevronRight, Camera, Building, FileText, Navigation, Phone, PhoneCall, Siren, ArrowLeft, LifeBuoy, Users, ClipboardCheck } from 'lucide-react';
+import { Flame, LayoutDashboard, MapPin, Truck, Bell, MessageSquare, ShieldAlert, Activity, ChevronLeft, ChevronRight, Camera, Building, FileText, Navigation, Phone, PhoneCall, Siren, ArrowLeft, LifeBuoy, Users, ClipboardCheck, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useI18n } from '@/i18n/I18nProvider';
 
@@ -24,6 +24,7 @@ const navItems: NavItem[] = [
   { id: 'chat', label: 'AI Assistant', icon: MessageSquare },
   { id: 'safety', label: 'Safety Guide', icon: Activity },
   { id: 'contacts', label: 'Emergency Contacts', icon: Users },
+  { id: 'staff', label: 'Staff Access', icon: ShieldCheck },
 ];
 
 export function DashboardSidebar({ activeTab, onTabChange, citySelector }: {
